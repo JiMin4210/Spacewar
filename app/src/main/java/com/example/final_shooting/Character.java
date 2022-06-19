@@ -16,8 +16,6 @@ public class Character {
         this.context = context;
         this.x = x;
         this.y = y;
-        speedX = (int)(Math.random()*5)+2; // 2~7구간 랜덤
-        speedY = (int)(Math.random()*5)+2;
         life = 1;
     }
 }

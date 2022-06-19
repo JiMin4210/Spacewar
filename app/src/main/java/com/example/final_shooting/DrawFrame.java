@@ -16,7 +16,8 @@ import java.util.ArrayList;
 public class DrawFrame extends View {
     Context context;
     Hero hero;
-    int screenWidth, screenHeight;
+    static int screenWidth, screenHeight; // 메모리 주소를 고정시킨다.
+    final int buttonbar = 120; // 밑에 버튼바 크기만큼 올려줌
     Bitmap background;
     Handler handler;
     long FRAME;
@@ -31,9 +32,8 @@ public class DrawFrame extends View {
         Point displaySize = new Point();
         ((Activity)getContext()).getWindowManager().getDefaultDisplay().getRealSize(displaySize);
         screenWidth = displaySize.x;
-        screenHeight = displaySize.y;
+        screenHeight = displaySize.y - buttonbar;
         hero = new Hero(context,screenWidth/2,screenHeight/2); // 히어로는 중심 좌표에서 생성
-        Toast.makeText(context, String.valueOf(screenHeight), Toast.LENGTH_SHORT).show();
         background = BitmapFactory.decodeResource(context.getResources(), R.drawable.background);
         monsters = new ArrayList<>();
 
@@ -50,24 +50,22 @@ public class DrawFrame extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.drawBitmap(background, 0, 0, null);
+        //-----------------------주인공 관련 코딩-------------------------
         canvas.drawBitmap(hero.bitmap, hero.x, hero.y, null);
-        int a = (int)(Math.random()*2);
-        if(a == 1) {
-            hero.x += hero.speedX;
-            hero.y += hero.speedY;
-        }
-        else{
-            hero.x -= hero.speedX;
-            hero.y -= hero.speedY;
-        }
+        //-------------------------------------------------------------
+
+        //-----------------------몬스터 관련 코딩-------------------------
         if(monsters.size() < 4){
-            monsters.add(new Monster(context,(int)(Math.random()*1000)+100,(int)(Math.random()*1500)));
+            monsters.add(new Monster(context,(int)(Math.random()*(screenWidth-100)),
+                    (int)(Math.random()*(screenHeight-buttonbar))));
         }
         for(int i = 0; i<monsters.size(); i++)
         {
             Monster monster = monsters.get(i);
             canvas.drawBitmap(monster.bitmap, monster.x, monster.y, null);
+            monster.moveShape();
         }
+        //-------------------------------------------------------------
         handler.postDelayed(runnable,FRAME);
     }
 
