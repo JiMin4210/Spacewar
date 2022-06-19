@@ -17,8 +17,8 @@ public class DrawFrame extends View {
     Context context;
     static int screenWidth, screenHeight; // 메모리 주소를 고정시킨다.
     static long FPS; // 초당 프레임 몇번인지 계산
+    static int buttonbar = 120; // 밑에 버튼바 크기만큼 올려줌
     long FRAME;
-    final int buttonbar = 120; // 밑에 버튼바 크기만큼 올려줌
     Bitmap background;
     Handler handler;
     Hero hero;
@@ -93,12 +93,14 @@ public class DrawFrame extends View {
 
         }
         if(event.getAction() == MotionEvent.ACTION_DOWN){
-            if(guns.size() < 5)
+            if(guns.size() < 0)
             {
                 Gun gun = new Gun(context,hero.x + hero.bitsize[0]/2,hero.y + hero.bitsize[1]/2);
                 gun.atan(touchX,touchY); // 총알 좌표 계산
                 guns.add(gun);
             }
+            hero.x = touchX;
+            hero.y = touchY;
         }
 
         if(event.getAction() == MotionEvent.ACTION_MOVE){
