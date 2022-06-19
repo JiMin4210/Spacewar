@@ -93,7 +93,7 @@ public class DrawFrame extends View {
 
         }
         if(event.getAction() == MotionEvent.ACTION_DOWN){
-            if(guns.size() < 0)
+            if(guns.size() < 5)
             {
                 Gun gun = new Gun(context,hero.x + hero.bitsize[0]/2,hero.y + hero.bitsize[1]/2);
                 gun.atan(touchX,touchY); // 총알 좌표 계산

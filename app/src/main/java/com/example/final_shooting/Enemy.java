@@ -15,8 +15,8 @@ public class Enemy extends Character{
     public Enemy(Context context, int x, int y) {
         super(context,x,y);
         this.lifeTime = 0;
-        this.speedX = (int)(Math.random()*5)+3; // 2~7구간 랜덤
-        this.speedY = (int)(Math.random()*5)+3;
+        this.speedX = (int)(Math.random()*5)+10; // 2~7구간 랜덤
+        this.speedY = (int)(Math.random()*5)+10;
         this.traceX = (int)(Math.random()*(DrawFrame.screenWidth-100)); // 처음에 추적할 위치
         this.traceY = (int)(Math.random()*(DrawFrame.screenHeight-DrawFrame.buttonbar));
     }
@@ -69,7 +69,7 @@ public class Enemy extends Character{
         if(x>ch.x-bitsize[0] && x<ch.x+ch.bitsize[0] &&y>ch.y-bitsize[1] && y<ch.y+ch.bitsize[1])
         {
             ch.life --;
-            life = 0; // 주인공과 부딪히는 적군들은 모두 없어진다 - 점수는 안오름
+            //life = 0; // 주인공과 부딪히는 적군들은 모두 없어진다 - 점수는 안오름
         }
     }
 

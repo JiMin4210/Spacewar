@@ -13,8 +13,6 @@ public class Monster extends Enemy{
         this.bitmap = BitmapFactory.decodeResource(context.getResources(), resID);
         bitsize[0] = bitmap.getWidth();
         bitsize[1] = bitmap.getHeight();
-        this.x = x;
-        this.y = y;
         this.enemyScore = 5; // 일반 몬스터 죽일시 5점
     }
 
