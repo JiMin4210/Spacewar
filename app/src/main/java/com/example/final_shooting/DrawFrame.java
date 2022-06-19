@@ -15,21 +15,24 @@ import java.util.ArrayList;
 
 public class DrawFrame extends View {
     Context context;
-    Hero hero;
     static int screenWidth, screenHeight; // 메모리 주소를 고정시킨다.
+    static long FPS; // 초당 프레임 몇번인지 계산
+    long FRAME;
     final int buttonbar = 120; // 밑에 버튼바 크기만큼 올려줌
     Bitmap background;
     Handler handler;
-    long FRAME;
+    Hero hero;
     Runnable runnable;
     ArrayList<Monster> monsters; // Array쓰는이유 - 메모리 최적화
     ArrayList<Gun> guns;
+
 
     public DrawFrame(Context context) {
         super(context);
         this.context = context;
         handler = new Handler();
         FRAME = 100;
+        FPS = 1000/FRAME; 
         Point displaySize = new Point();
         ((Activity)getContext()).getWindowManager().getDefaultDisplay().getRealSize(displaySize);
         screenWidth = displaySize.x;

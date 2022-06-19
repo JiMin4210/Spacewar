@@ -5,9 +5,9 @@ import android.graphics.BitmapFactory;
 
 public class Enemy extends Character{
     int enemyScore; // 적들을 죽일시 얻는 점수
-    int lifeTime; // 적들이 생존한 시간 - 5초가 지나면 화나서? 주인공 쫒아오게함
-    int mainCx; // 적들은 주인공의 좌표값을 알고있어야 추적 할 수 있기떄문에
-    int mainCy; // 적들에게만 주인공의 좌표값을 넣어줌
+    long lifeTime; // 적들이 생존한 시간
+    int angryTime = 5; // 5초가 지나면 화나서? 주인공 쫒아오게함
+    int angrySpeed = 3; // 3초마다 추적시간을 점점 증가시키기 위함.
 
     public Enemy(Context context, int x, int y) {
         super(context,x,y);
@@ -19,10 +19,10 @@ public class Enemy extends Character{
     @Override
     public void moveShape(DrawFrame df) {
         outCheck(x + speedX, y+speedY);
-        //lifeTime ++; // moveShape는 0.1초에 한번 실행되니까 lifeTime이 10이면 1초가 살아있는것.
+        lifeTime ++;
         collisionCheck(df.hero);
-        //if(lifeTime >= 50) // 5초 이상 시 주인공을 추적하는 if문
-            //traceCharacter(x,y);
+        if(lifeTime >= df.FPS*angryTime) // n초 이상 시 주인공을 추적하는 if문
+            traceCharacter(df.hero);
         x += speedX; // ->이걸 8방향으로 랜덤하게 움직이고 방향있게 해주기
         y += speedY;
     }
@@ -54,6 +54,34 @@ public class Enemy extends Character{
         {
             ch.life --;
             life = 0; // 주인공과 부딪히는 적군들은 모두 없어진다 - 점수는 안오름
+        }
+    }
+
+    public void traceCharacter(Hero hero) // 주인공을 추적하는 함수
+    {
+        if(x > hero.x + hero.bitsize[0])
+        {
+            speedX = -Math.abs(speedX);
+            if(lifeTime % DrawFrame.FPS * angrySpeed == 0) // 추적 시작후 n초마다 속도가 1씩 빨라진다.
+                speedX --;
+        }
+        else if(x + bitsize[0] < hero.x)
+        {
+            speedX = Math.abs(speedX);
+            if(lifeTime % DrawFrame.FPS * angrySpeed == 0)
+                speedX ++;
+        }
+        if(y > hero.y + hero.bitsize[1])
+        {
+            speedY = -Math.abs(speedY);
+            if(lifeTime % DrawFrame.FPS * angrySpeed == 0)
+                speedY --;
+        }
+        else if(y + bitsize[1] < hero.y)
+        {
+            speedY = Math.abs(speedY);
+            if(lifeTime % DrawFrame.FPS * angrySpeed == 0)
+                speedY ++;
         }
     }
 
