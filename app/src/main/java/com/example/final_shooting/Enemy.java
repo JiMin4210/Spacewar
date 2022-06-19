@@ -17,13 +17,13 @@ public class Enemy extends Character{
     }
 
     @Override
-    public void moveShape(Character ch) {
+    public void moveShape(DrawFrame df) {
         outCheck(x + speedX, y+speedY);
         //lifeTime ++; // moveShape는 0.1초에 한번 실행되니까 lifeTime이 10이면 1초가 살아있는것.
-        collisionCheck(ch);
+        collisionCheck(df.hero);
         //if(lifeTime >= 50) // 5초 이상 시 주인공을 추적하는 if문
             //traceCharacter(x,y);
-        x += speedX;
+        x += speedX; // ->이걸 8방향으로 랜덤하게 움직이고 방향있게 해주기
         y += speedY;
     }
 

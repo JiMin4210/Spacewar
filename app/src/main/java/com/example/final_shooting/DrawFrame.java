@@ -64,7 +64,7 @@ public class DrawFrame extends View {
         {
             Monster monster = monsters.get(i);
             canvas.drawBitmap(monster.bitmap, monster.x, monster.y, null);
-            monster.moveShape(hero);
+            monster.moveShape(this);
             if(monster.life == 0)
                 monsters.remove(monster);
         }
@@ -74,11 +74,9 @@ public class DrawFrame extends View {
         {
             Gun gun = guns.get(i);
             canvas.drawBitmap(gun.bitmap, gun.x, gun.y, null);
-            gun.moveShape(hero);
+            gun.moveShape(this);
             if(gun.life == 0)
-            {
                 guns.remove(gun);
-            }
         }
         //-------------------------------------------------------------
         handler.postDelayed(runnable,FRAME);

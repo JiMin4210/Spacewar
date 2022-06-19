@@ -19,7 +19,7 @@ public abstract class Character {
         life = 1;
     }
 
-    public abstract void moveShape(Character ch);
+    public abstract void moveShape(DrawFrame df);
     public abstract void outCheck(int movingX, int movingY);
     public abstract void collisionCheck(Character ch); // 충돌 검사 - 모든 객체가 해야하기에 공통
 }

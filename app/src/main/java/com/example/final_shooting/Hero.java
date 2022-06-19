@@ -19,7 +19,7 @@ public class Hero extends Character{
     }
 
     @Override
-    public void moveShape(Character ch) {
+    public void moveShape(DrawFrame df) {
     }
 
     @Override
