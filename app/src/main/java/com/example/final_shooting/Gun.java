@@ -30,13 +30,15 @@ public class Gun extends Character{
             this.speedY = (int)(-subSpeed*Math.sin(angle));
         }
     }
-
-    public void moveShape() {
+    @Override
+    public void moveShape(Character ch) {
         outCheck(x + speedX, y+speedY);
+        collisionCheck(ch);
         x += speedX;
         y += speedY;
     }
 
+    @Override
     public void outCheck(int movingX, int movingY)
     {
         if(movingX > DrawFrame.screenWidth - bitsize[0] || movingX < 0 || movingY > DrawFrame.screenHeight  - bitsize[1] || movingY < 0)
@@ -45,6 +47,7 @@ public class Gun extends Character{
         }
     }
 
-
+    @Override
+    public void collisionCheck(Character ch) {}
 
 }

@@ -12,20 +12,22 @@ public class Enemy extends Character{
     public Enemy(Context context, int x, int y) {
         super(context,x,y);
         this.lifeTime = 0;
-        this.speedX = (int)(Math.random()*5)+5; // 2~7구간 랜덤
-        this.speedY = (int)(Math.random()*5)+5;
+        this.speedX = (int)(Math.random()*5)+20; // 2~7구간 랜덤
+        this.speedY = (int)(Math.random()*5)+20;
     }
 
-    public void moveShape() {
+    @Override
+    public void moveShape(Character ch) {
         outCheck(x + speedX, y+speedY);
         //lifeTime ++; // moveShape는 0.1초에 한번 실행되니까 lifeTime이 10이면 1초가 살아있는것.
-        //collis  ionCheck(f, ch);
+        collisionCheck(ch);
         //if(lifeTime >= 50) // 5초 이상 시 주인공을 추적하는 if문
             //traceCharacter(x,y);
         x += speedX;
         y += speedY;
     }
 
+    @Override
     public void outCheck(int movingX, int movingY)
     {
         if(movingX > DrawFrame.screenWidth - bitsize[0])
@@ -46,6 +48,13 @@ public class Enemy extends Character{
         }
     }
 
-
+    @Override
+    public void collisionCheck(Character ch) {
+        if(x>ch.x-bitsize[0] && x<ch.x+ch.bitsize[0] &&y>ch.y-bitsize[1] && y<ch.y+ch.bitsize[1])
+        {
+            ch.life --;
+            life = 0; // 주인공과 부딪히는 적군들은 모두 없어진다 - 점수는 안오름
+        }
+    }
 
 }

@@ -64,7 +64,9 @@ public class DrawFrame extends View {
         {
             Monster monster = monsters.get(i);
             canvas.drawBitmap(monster.bitmap, monster.x, monster.y, null);
-            monster.moveShape();
+            monster.moveShape(hero);
+            if(monster.life == 0)
+                monsters.remove(monster);
         }
         //-------------------------------------------------------------
         //-----------------------총알 관련 코딩--------------------------
@@ -72,7 +74,7 @@ public class DrawFrame extends View {
         {
             Gun gun = guns.get(i);
             canvas.drawBitmap(gun.bitmap, gun.x, gun.y, null);
-            gun.moveShape();
+            gun.moveShape(hero);
             if(gun.life == 0)
             {
                 guns.remove(gun);

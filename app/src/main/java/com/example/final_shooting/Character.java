@@ -4,7 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-public class Character {
+public abstract class Character {
     Context context;
     Bitmap bitmap;
     int bitsize[] = new int[2]; // 0번 = Width, 1번 = Height
@@ -18,4 +18,8 @@ public class Character {
         this.y = y;
         life = 1;
     }
+
+    public abstract void moveShape(Character ch);
+    public abstract void outCheck(int movingX, int movingY);
+    public abstract void collisionCheck(Character ch); // 충돌 검사 - 모든 객체가 해야하기에 공통
 }
