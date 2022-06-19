@@ -22,7 +22,8 @@ public class DrawFrame extends View {
     Handler handler;
     long FRAME;
     Runnable runnable;
-    ArrayList<Monster> monsters;
+    ArrayList<Monster> monsters; // Array쓰는이유 - 메모리 최적화
+    ArrayList<Gun> guns;
 
     public DrawFrame(Context context) {
         super(context);
@@ -36,7 +37,7 @@ public class DrawFrame extends View {
         hero = new Hero(context,screenWidth/2,screenHeight/2); // 히어로는 중심 좌표에서 생성
         background = BitmapFactory.decodeResource(context.getResources(), R.drawable.background);
         monsters = new ArrayList<>();
-
+        guns = new ArrayList<>();
         runnable = new Runnable() {
             @Override
             public void run() {
@@ -66,7 +67,41 @@ public class DrawFrame extends View {
             monster.moveShape();
         }
         //-------------------------------------------------------------
+        //-----------------------총알 관련 코딩--------------------------
+        for(int i = 0; i<guns.size(); i++)
+        {
+            Gun gun = guns.get(i);
+            canvas.drawBitmap(gun.bitmap, gun.x, gun.y, null);
+            gun.moveShape();
+            if(gun.life == 0)
+            {
+                guns.remove(gun);
+            }
+        }
+        //-------------------------------------------------------------
         handler.postDelayed(runnable,FRAME);
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        int touchX = (int)event.getX();
+        int touchY = (int)event.getY();
+        if(event.getAction() == MotionEvent.ACTION_UP){
+
+        }
+        if(event.getAction() == MotionEvent.ACTION_DOWN){
+            if(guns.size() < 5)
+            {
+                Gun gun = new Gun(context,hero.x + hero.bitsize[0]/2,hero.y + hero.bitsize[1]/2);
+                gun.atan(touchX,touchY); // 총알 좌표 계산
+                guns.add(gun);
+            }
+        }
+
+        if(event.getAction() == MotionEvent.ACTION_MOVE){
+
+        }
+
+        return true;
+    }
 }
