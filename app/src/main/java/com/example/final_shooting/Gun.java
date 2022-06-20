@@ -5,7 +5,7 @@ import android.graphics.BitmapFactory;
 
 public class Gun extends Character{
 
-    int subSpeed = 25; // 마우스 클릭 방향으로 총알을 보내려면 증가 값이 일정해야하기 때문에 이 값으로 값을 조절
+    int subSpeed = 35; // 마우스 클릭 방향으로 총알을 보내려면 증가 값이 일정해야하기 때문에 이 값으로 값을 조절
 
     public Gun(Context context, int x, int y) {
         super(context,x,y);

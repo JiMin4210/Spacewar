@@ -11,6 +11,9 @@ public class Enemy extends Character{
     int xymargin = 300; // 추적 좌표에서 얼마만큼 오차가 나도 되는지
     int traceX, traceY;
     int bufX, bufY;
+    int nownumber;
+    int name;
+    int ragemode;
 
     public Enemy(Context context, int x, int y) {
         super(context,x,y);
@@ -19,6 +22,8 @@ public class Enemy extends Character{
         this.speedY = (int)(Math.random()*3)+1; // 1~5구간 랜덤
         this.traceX = (int)(Math.random()*(DrawFrame.screenWidth-100)); // 처음에 추적할 위치
         this.traceY = (int)(Math.random()*(DrawFrame.screenHeight-DrawFrame.buttonbar));
+        this.nownumber = 1;
+        this.ragemode = 0;
     }
 
     @Override
@@ -34,7 +39,10 @@ public class Enemy extends Character{
             }
         }
         else// n초 이상 시 주인공을 추적하는 if문
-            traceXY(df.hero.x,df.hero.y,df.hero.bitsize[0], df.hero.bitsize[1], 1);
+        {
+            traceXY(df.hero.x, df.hero.y, df.hero.bitsize[0], df.hero.bitsize[1], 1);
+            ragemode = 1;
+        }
         outCheck(x + speedX, y+speedY);
         x += speedX; // ->이걸 8방향으로 랜덤하게 움직이고 방향있게 해주기
         y += speedY;

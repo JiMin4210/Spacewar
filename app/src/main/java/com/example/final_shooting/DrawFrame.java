@@ -29,6 +29,7 @@ public class DrawFrame extends View {
     ArrayList<Gun> guns;
     ArrayList<Item> items;
     Paint scorePaint;
+    Bitmap bitmap;
 
 
     public DrawFrame(Context context) {
@@ -42,7 +43,7 @@ public class DrawFrame extends View {
         screenWidth = displaySize.x;
         screenHeight = displaySize.y - buttonbar;
         hero = new Hero(context,screenWidth/2,screenHeight/2); // 히어로는 중심 좌표에서 생성
-        background = BitmapFactory.decodeResource(context.getResources(), R.drawable.back1);
+        background = BitmapFactory.decodeResource(context.getResources(), R.drawable.playmap);
         monsters = new ArrayList<>();
         guns = new ArrayList<>();
         items = new ArrayList<>();
@@ -50,6 +51,7 @@ public class DrawFrame extends View {
         scorePaint.setColor(Color.RED);
         scorePaint.setTextSize(80);
         scorePaint.setTextAlign(Paint.Align.LEFT);
+        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ragemode); // 그냥 실험용
         runnable = new Runnable() {
             @Override
             public void run() {
@@ -62,8 +64,6 @@ public class DrawFrame extends View {
     protected void onDraw(Canvas canvas) {
         canvas.drawBitmap(background, 0, 0, null);
         //-----------------------주인공 관련 코딩-------------------------
-        canvas.drawBitmap(hero.bitmap, hero.x, hero.y, null);
-
         int test = getJoystick();
         canvas.drawText(String.valueOf(test),50,50,scorePaint);
         if(test%10000 == 1) //오
@@ -110,11 +110,13 @@ public class DrawFrame extends View {
             hero.y = hero.y + hero.speedY;
             hero.direction = 8;
         }
-
+        String bitname = "hero" + String.valueOf(hero.direction); // 몬스터 이미지는 랜덤으로 생성 + 몬스터마다 점수, 체력 다르게 가능
+        int resID = context.getResources().getIdentifier(bitname , "drawable", context.getPackageName());
+        hero.bitmap = BitmapFactory.decodeResource(context.getResources(), resID);
 
         if(test/10000 == 1)
         {
-            if(guns.size() < 5)
+            if(guns.size() < 1)
             {
                 Gun gun = new Gun(context,hero.x + hero.bitsize[0]/2,hero.y + hero.bitsize[1]/2);
                 switch (hero.direction){
@@ -154,21 +156,31 @@ public class DrawFrame extends View {
                 guns.add(gun);
             }
         }
-
+        canvas.drawBitmap(hero.bitmap, hero.x, hero.y, null);
         //-------------------------------------------------------------
 
         //-----------------------몬스터 관련 코딩-------------------------
-        if(monsters.size() < 4){
+        if(monsters.size() < 7){
             monsters.add(new Monster(context,(int)(Math.random()*(screenWidth-100)),
                     (int)(Math.random()*(screenHeight-buttonbar))));
         }
         for(int i = 0; i<monsters.size(); i++)
         {
             Monster monster = monsters.get(i);
+            if(monster.ragemode == 1)
+            {
+                canvas.drawBitmap(bitmap, monster.x, monster.y, null);
+            }
             canvas.drawBitmap(monster.bitmap, monster.x, monster.y, null);
             monster.moveShape(this);
             if(monster.life == 0)
                 monsters.remove(monster);
+            else {
+                monster.nownumber = (monster.nownumber == 2) ? 1:2;
+                String bitnamem = "monster" + String.valueOf(monster.name) + String.valueOf(monster.nownumber); // 몬스터 이미지는 랜덤으로 생성 + 몬스터마다 점수, 체력 다르게 가능
+                int resIDm = context.getResources().getIdentifier(bitnamem, "drawable", context.getPackageName());
+                monster.bitmap = BitmapFactory.decodeResource(context.getResources(), resIDm);
+            }
         }
         //-------------------------------------------------------------
         //-----------------------총알 관련 코딩--------------------------
