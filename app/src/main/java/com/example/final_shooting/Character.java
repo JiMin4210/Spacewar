@@ -11,14 +11,14 @@ public abstract class Character {
     int x, y;
     int speedX, speedY;
     int life;
-    int direction; // 바라보는 방향을 넣을것이다.
+    int direction; // 바라보는 방향을 넣을것이다. 1 = 오른쪽부터 위로 한바퀴
 
     public Character(Context context, int x, int y) {
         this.context = context;
         this.x = x;
         this.y = y;
         this.life = 1;
-        this.direction = 0;
+        this.direction = 3; // 기본 방향은 아랫방향
     }
 
     public abstract void moveShape(DrawFrame df);

@@ -9,8 +9,8 @@ public class Hero extends Character{
 
     public Hero(Context context, int x, int y) {
         super(context,x,y);
-        this.speedX = 15;
-        this.speedY = 15;
+        this.speedX = 7;
+        this.speedY = 7;
         this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.hero);
         bitsize[0] = bitmap.getWidth();
         bitsize[1] = bitmap.getHeight();
