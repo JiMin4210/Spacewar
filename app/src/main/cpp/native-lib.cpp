@@ -23,7 +23,7 @@ int fpga_jostick()
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_com_example_final_1shooting_DrawFrame_getJoystick(
+Java_com_example_final_1shooting_Hero_getJoystick(
         JNIEnv* env,
         jobject /* this */) {
     jint result = fpga_jostick();

@@ -12,8 +12,8 @@ public class Enemy extends Character{
     int traceX, traceY;
     int bufX, bufY;
     int nownumber;
-    int name;
     int ragemode;
+    String nickname;
 
     public Enemy(Context context, int x, int y) {
         super(context,x,y);
@@ -22,8 +22,9 @@ public class Enemy extends Character{
         this.speedY = (int)(Math.random()*3)+1; // 1~5구간 랜덤
         this.traceX = (int)(Math.random()*(DrawFrame.screenWidth-100)); // 처음에 추적할 위치
         this.traceY = (int)(Math.random()*(DrawFrame.screenHeight-DrawFrame.buttonbar));
-        this.nownumber = 1;
+        this.nownumber = 1; // 현재 무슨 행동인지 식별하기위함
         this.ragemode = 0;
+        this.direction = (int)(Math.random()*2)+1; // 적의 방향은 왼쪽, 오른쪽 두개밖에 없음
     }
 
     @Override
@@ -47,8 +48,15 @@ public class Enemy extends Character{
         x += speedX; // ->이걸 8방향으로 랜덤하게 움직이고 방향있게 해주기
         y += speedY;
 
+        if(speedX > 0)
+            direction = 1; // 스피드가 0보다 큰 경우 오른쪽 방향
+        else
+            direction = 2; // 스피드가 0보다 작은 경우 왼쪽 방향
+
         speedX = bufX;
         speedY = bufY;
+
+        checkbitmap();
     }
 
     @Override
@@ -116,6 +124,14 @@ public class Enemy extends Character{
                 bufY++;
 
         }
+    }
+    public void checkbitmap(){ // 왼쪽 걸음 2개 오른쪽 걸음 2개일경우이다.
+        if(lifeTime % (DrawFrame.FPS/3) == 0) // n 초마다 발 전환하겠다. (FPS/3 = 0.333초)
+            nownumber = (nownumber == 2) ? 1:2;
+        String dir = (direction == 2) ? "l" : "r";
+        String bitname = this.nickname + dir + String.valueOf(nownumber); // 몬스터 이미지는 랜덤으로 생성 + 몬스터마다 점수, 체력 다르게 가능
+        int resID = context.getResources().getIdentifier(bitname, "drawable", context.getPackageName());
+        bitmap = BitmapFactory.decodeResource(context.getResources(), resID);
     }
 
 

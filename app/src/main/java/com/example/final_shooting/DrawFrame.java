@@ -31,7 +31,6 @@ public class DrawFrame extends View {
     Paint scorePaint;
     Bitmap bitmap;
 
-
     public DrawFrame(Context context) {
         super(context);
         this.context = context;
@@ -64,99 +63,10 @@ public class DrawFrame extends View {
     protected void onDraw(Canvas canvas) {
         canvas.drawBitmap(background, 0, 0, null);
         //-----------------------주인공 관련 코딩-------------------------
-        int test = getJoystick();
-        canvas.drawText(String.valueOf(test),50,50,scorePaint);
-        if(test%10000 == 1) //오
-        {
-            hero.x = hero.x + hero.speedX;
-            hero.direction = 1;
-        }
-        else if(test%10000 == 10) // 대각 위오
-        {
-            hero.x = hero.x + hero.speedX;
-            hero.y = hero.y - hero.speedY;
-            hero.direction = 2;
-        }
-        else if(test%10000 == 11) // 위
-        {
-            hero.y = hero.y - hero.speedY;
-            hero.direction = 3;
-        }
-        else if(test%10000 == 100) // 대각 위왼
-        {
-            hero.x = hero.x - hero.speedX;
-            hero.y = hero.y - hero.speedY;
-            hero.direction = 4;
-        }
-        else if(test%10000 == 101) // 왼
-        {
-            hero.x = hero.x - hero.speedX;
-            hero.direction = 5;
-        }
-        else if(test%10000 == 110) // 대각 아래왼
-        {
-            hero.x = hero.x - hero.speedX;
-            hero.y = hero.y + hero.speedY;
-            hero.direction = 6;
-        }
-        else if(test%10000 == 111) // 아래
-        {
-            hero.y = hero.y + hero.speedX;
-            hero.direction = 7;
-        }
-        else if(test%10000 == 1000) // 대각 아래 오른
-        {
-            hero.x = hero.x + hero.speedX;
-            hero.y = hero.y + hero.speedY;
-            hero.direction = 8;
-        }
-        String bitname = "hero" + String.valueOf(hero.direction); // 몬스터 이미지는 랜덤으로 생성 + 몬스터마다 점수, 체력 다르게 가능
-        int resID = context.getResources().getIdentifier(bitname , "drawable", context.getPackageName());
-        hero.bitmap = BitmapFactory.decodeResource(context.getResources(), resID);
-
-        if(test/10000 == 1)
-        {
-            if(guns.size() < 1)
-            {
-                Gun gun = new Gun(context,hero.x + hero.bitsize[0]/2,hero.y + hero.bitsize[1]/2);
-                switch (hero.direction){
-                    case 1:
-                        gun.speedX = gun.subSpeed;
-                        gun.speedY = 0;
-                        break;
-                    case 2:
-                        gun.speedX = gun.subSpeed;
-                        gun.speedY = -gun.subSpeed;
-                        break;
-                    case 3:
-                        gun.speedX = 0;
-                        gun.speedY = -gun.subSpeed;
-                        break;
-                    case 4:
-                        gun.speedX = -gun.subSpeed;
-                        gun.speedY = -gun.subSpeed;
-                        break;
-                    case 5:
-                        gun.speedX = -gun.subSpeed;
-                        gun.speedY = 0;
-                        break;
-                    case 6:
-                        gun.speedX = -gun.subSpeed;
-                        gun.speedY = gun.subSpeed;
-                        break;
-                    case 7:
-                        gun.speedX = 0;
-                        gun.speedY = gun.subSpeed;
-                        break;
-                    case 8:
-                        gun.speedX = gun.subSpeed;
-                        gun.speedY = gun.subSpeed;
-                        break;
-            }
-                guns.add(gun);
-            }
-        }
+        //int test = getJoystick();
+        //canvas.drawText(String.valueOf(test),50,50,scorePaint);
         canvas.drawBitmap(hero.bitmap, hero.x, hero.y, null);
+        hero.moveShape(this);
         //-------------------------------------------------------------
 
         //-----------------------몬스터 관련 코딩-------------------------
@@ -175,12 +85,7 @@ public class DrawFrame extends View {
             monster.moveShape(this);
             if(monster.life == 0)
                 monsters.remove(monster);
-            else {
-                monster.nownumber = (monster.nownumber == 2) ? 1:2;
-                String bitnamem = "monster" + String.valueOf(monster.name) + String.valueOf(monster.nownumber); // 몬스터 이미지는 랜덤으로 생성 + 몬스터마다 점수, 체력 다르게 가능
-                int resIDm = context.getResources().getIdentifier(bitnamem, "drawable", context.getPackageName());
-                monster.bitmap = BitmapFactory.decodeResource(context.getResources(), resIDm);
-            }
+
         }
         //-------------------------------------------------------------
         //-----------------------총알 관련 코딩--------------------------
@@ -194,7 +99,7 @@ public class DrawFrame extends View {
         }
         //-------------------------------------------------------------
         //-----------------------아이템 관련 코딩-------------------------
-        if((int)(Math.random()*150) == 1) {
+        if((int)(Math.random()*150) == 1) { // 확률 구현
             if (items.size() < 4) {
                 items.add(new Healer(context,(int)(Math.random()*(screenWidth-100)),
                         (int)(Math.random()*(screenHeight-buttonbar))));
@@ -226,15 +131,16 @@ public class DrawFrame extends View {
                 gun.atan(touchX,touchY); // 총알 좌표 계산
                 guns.add(gun);
             }
-            //hero.x = touchX;
-            //hero.y = touchY;
+            hero.x = touchX;
+            hero.y = touchY;
         }
 
         if(event.getAction() == MotionEvent.ACTION_MOVE){
-
+            hero.x = touchX;
+            hero.y = touchY;
         }
 
         return true;
     }
-    public native int getJoystick();
+
 }

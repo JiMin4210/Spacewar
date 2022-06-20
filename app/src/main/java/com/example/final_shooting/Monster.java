@@ -7,10 +7,19 @@ public class Monster extends Enemy{
 
     public Monster(Context context, int x, int y) {
         super(context,x,y);
-        this.name = (int)(Math.random()*3) + 1;
-        String bitname = "monster" + String.valueOf(name) + String.valueOf(nownumber); // 몬스터 이미지는 랜덤으로 생성 + 몬스터마다 점수, 체력 다르게 가능
-        int resID = context.getResources().getIdentifier(bitname , "drawable", context.getPackageName());
-        this.bitmap = BitmapFactory.decodeResource(context.getResources(), resID);
+        switch((int)(Math.random()*3) + 1){
+            case 1:
+                this.nickname = "eye";
+                break;
+            case 2:
+                this.nickname = "zombie1";
+                break;
+            case 3:
+                this.nickname = "zombie2";
+                break;
+        }
+
+        checkbitmap();
         bitsize[0] = bitmap.getWidth();
         bitsize[1] = bitmap.getHeight();
         this.enemyScore = 5; // 일반 몬스터 죽일시 5점

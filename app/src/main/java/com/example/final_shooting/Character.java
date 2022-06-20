@@ -18,7 +18,6 @@ public abstract class Character {
         this.x = x;
         this.y = y;
         this.life = 1;
-        this.direction = 7; // 기본 방향은 아랫방향
     }
 
     public abstract void moveShape(DrawFrame df);
