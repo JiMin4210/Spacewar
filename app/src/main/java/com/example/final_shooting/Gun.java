@@ -34,7 +34,9 @@ public class Gun extends Character{
     public void moveShape(DrawFrame df) {
         outCheck(x + speedX, y+speedY);
         for(int i = 0; i<df.monsters.size(); i++)
-            collisionCheck(df.monsters.get(i));
+            collisionCheck(df.monsters.get(i), df);
+        for(int i = 0; i<df.bosses.size(); i++)
+            collisionCheck(df.bosses.get(i), df);
         x += speedX;
         y += speedY;
     }
@@ -49,11 +51,12 @@ public class Gun extends Character{
     }
 
     @Override
-    public void collisionCheck(Character ch) {
+    public void collisionCheck(Character ch, DrawFrame df) {
         if(x>ch.x-bitsize[0] && x<ch.x+ch.bitsize[0] &&y>ch.y-bitsize[1] && y<ch.y+ch.bitsize[1])
         {
             ch.life --;
             life = 0;
+            df.effects.add(new Effect(context,ch.x+ch.bitsize[0]/2,ch.y,"blood",3));
         }
     }
 

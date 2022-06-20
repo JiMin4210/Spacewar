@@ -47,7 +47,7 @@ public class Hero extends Character{
     }
 
     @Override
-    public void collisionCheck(Character ch) {}
+    public void collisionCheck(Character ch, DrawFrame df) {}
 
     public void joystickCheck() {
         int decode = getJoystick();

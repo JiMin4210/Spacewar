@@ -12,11 +12,11 @@ public class Item extends Character{
 
     @Override
     public void moveShape(DrawFrame df) {
-        collisionCheck(df.hero);
+        collisionCheck(df.hero, df);
     }
 
     @Override
-    public void collisionCheck(Character ch) {
+    public void collisionCheck(Character ch, DrawFrame df) {
         if(x>ch.x-bitsize[0] && x<ch.x+ch.bitsize[0] &&y>ch.y-bitsize[1] && y<ch.y+ch.bitsize[1])
         {
             if(whatItem == 1)

@@ -30,7 +30,7 @@ public class Enemy extends Character{
     @Override
     public void moveShape(DrawFrame df) {
         lifeTime ++;
-        collisionCheck(df.hero);
+        collisionCheck(df.hero, df);
         if(lifeTime <= df.FPS*angryTime) {
             traceXY(traceX, traceY, 0, 0, 0);
             if(x>traceX-bitsize[0] && x<traceX+xymargin &&y>traceY-bitsize[1] && y<traceY+xymargin)
@@ -81,7 +81,7 @@ public class Enemy extends Character{
     }
 
     @Override
-    public void collisionCheck(Character ch) {
+    public void collisionCheck(Character ch, DrawFrame df) {
         if(x>ch.x-bitsize[0] && x<ch.x+ch.bitsize[0] &&y>ch.y-bitsize[1] && y<ch.y+ch.bitsize[1])
         {
             ch.life --;

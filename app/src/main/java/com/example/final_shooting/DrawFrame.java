@@ -11,7 +11,6 @@ import android.graphics.Point;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -26,10 +25,13 @@ public class DrawFrame extends View {
     Hero hero;
     Runnable runnable;
     ArrayList<Monster> monsters; // Array쓰는이유 - 메모리 최적화
+    ArrayList<Boss> bosses;
     ArrayList<Gun> guns;
     ArrayList<Item> items;
+    ArrayList<Effect> effects;
     Paint scorePaint;
     Bitmap bitmap;
+
 
     public DrawFrame(Context context) {
         super(context);
@@ -44,8 +46,10 @@ public class DrawFrame extends View {
         hero = new Hero(context,screenWidth/2,screenHeight/2); // 히어로는 중심 좌표에서 생성
         background = BitmapFactory.decodeResource(context.getResources(), R.drawable.playmap);
         monsters = new ArrayList<>();
+        bosses = new ArrayList<>();
         guns = new ArrayList<>();
         items = new ArrayList<>();
+        effects = new ArrayList<>();
         scorePaint = new Paint();
         scorePaint.setColor(Color.RED);
         scorePaint.setTextSize(80);
@@ -88,6 +92,27 @@ public class DrawFrame extends View {
 
         }
         //-------------------------------------------------------------
+        //-----------------------보스 관련 코딩-------------------------
+        if((int)(Math.random()*FPS*10) == 1) { // 확률 구현 (약 10초에 한번이 평균)
+            if (bosses.size() < 2) {
+                bosses.add(new Boss(context, (int) (Math.random() * (screenWidth - 100)),
+                        (int) (Math.random() * (screenHeight - buttonbar))));
+            }
+        }
+        for(int i = 0; i<bosses.size(); i++)
+        {
+            Boss boss = bosses.get(i);
+            if(boss.ragemode == 1)
+            {
+                canvas.drawBitmap(bitmap, boss.x, boss.y, null);
+            }
+            canvas.drawBitmap(boss.bitmap, boss.x, boss.y, null);
+            boss.moveShape(this);
+            if(boss.life == 0)
+                bosses.remove(boss);
+
+        }
+        //-------------------------------------------------------------
         //-----------------------총알 관련 코딩--------------------------
         for(int i = 0; i<guns.size(); i++)
         {
@@ -112,6 +137,16 @@ public class DrawFrame extends View {
             item.moveShape(this); // 충돌검사 수행
             if(item.life == 0)
                 items.remove(item);
+        }
+        //-------------------------------------------------------------
+        //----------------------이펙트 관련 코딩-------------------------
+        for(int i = 0; i<effects.size(); i++)
+        {
+            Effect effect = effects.get(i);
+            effect.checkbitmap();
+            canvas.drawBitmap(effect.bitmap, effect.X, effect.Y, null);
+            if(++(effect.nownum) > effect.Framenum)
+                effects.remove(effect);
         }
         //-------------------------------------------------------------
         handler.postDelayed(runnable,FRAME);
