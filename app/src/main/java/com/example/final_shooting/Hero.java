@@ -7,6 +7,9 @@ import java.util.ArrayList;
 
 public class Hero extends Character{
 
+    int face; // 현재 표정
+    int facetime; // 현재 표정 유지 시간.
+
     public Hero(Context context, int x, int y) {
         super(context,x,y);
         this.speedX = 7;
@@ -19,6 +22,8 @@ public class Hero extends Character{
         this.y = y - bitsize[1]/2; // 원하는 좌표가 중앙이 되도록 조절해줌 (화면 사이즈 계산으로)
         this.life = 5;
         ReciveLedValue(life);
+        this.face = 0; // 기본 표정 = 스마일
+        this.facetime = 0; // 현재 표정 유지 시간.
     }
 
     @Override
@@ -26,6 +31,17 @@ public class Hero extends Character{
         joystickCheck();
         outCheck(x, y);
         checkbitmap();
+        if(face != 0) {
+            facetime++;
+            if(facetime % (DrawFrame.FPS*2) == 0)
+            {
+                face = 0;
+                ReceiveDotValue(face);
+                facetime = 0;
+            }
+        }
+
+
     }
 
     @Override
@@ -38,7 +54,7 @@ public class Hero extends Character{
         {
             x = 0;
         }
-        if(movingY > DrawFrame.screenHeight  - bitsize[1])
+        if(movingY > DrawFrame.screenHeight - DrawFrame.buttonbar - bitsize[1])
         {
             y = DrawFrame.screenHeight  - bitsize[1];
         }

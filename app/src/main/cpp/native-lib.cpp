@@ -3,6 +3,7 @@
 #include <android/log.h>
 #include <fcntl.h>
 #include <unistd.h> // write(), close()
+#include "fpga_dot_font.h"
 
 #define JOY_DEVICE "/dev/fpga_joystick"
 #define BUZZER_DEVICE "/dev/fpga_buzzer"
@@ -11,12 +12,45 @@
 #define STEP_DEVICE "/dev/fpga_step_motor"
 #define LED_DEVICE "/dev/fpga_led"
 #define FND_DEVICE "/dev/fpga_fnd"
+#define DOT_DEVICE "/dev/fpga_dot"
 
 #define MAX_DIGIT 4
 #define LINE_BUFF 16
 #define MAX_BUFF 32
 #define MAX_BUTTON 9
 
+
+int fpga_dot(int value) // value = value mode 1,2
+{
+    int i;
+    int dev;
+    int str_size;
+
+    str_size = sizeof(face[value]);
+
+    dev = open(DOT_DEVICE, O_RDWR);
+
+    if (dev<0)
+    {
+        __android_log_print(ANDROID_LOG_INFO, "Device Open Error", "Driver = %d", value);
+    }
+    else {
+        __android_log_print(ANDROID_LOG_INFO, "Device Open Success", "Driver = %d", value);
+
+        write(dev, face[value], str_size); //얼굴 테스트
+
+        close(dev);
+    }
+    return 0;
+}
+
+extern "C" JNIEXPORT jint JNICALL
+Java_com_example_final_1shooting_Character_ReceiveDotValue(JNIEnv* env, jobject, jint val)
+{
+    __android_log_print(ANDROID_LOG_INFO, "FpgaDotExample", "dot value = %d", val);
+    fpga_dot(val);
+    return NULL;
+}
 
 // ------------------------------------ FND
 int fpga_fnd(const char* str)
@@ -39,7 +73,7 @@ int fpga_fnd(const char* str)
         if((str[i]<0x30)||(str[i])>0x39){
             return 1;
         }
-        data[i] = str[i] - 0x30;
+        data[3-i] = str[str_size - 1 - i] - 0x30;
     }
     dev = open(FND_DEVICE, O_RDWR);
     if(dev<0){
@@ -75,7 +109,7 @@ int fpga_led(int x)
     unsigned char val = 0;
     for(int i = 0; i<x; i++)
     {
-        val = val | (0x01 << i); // 목숨의 개수만큼 쉬프트해준다
+        val = val | (0x01 << (7-i)); // 목숨의 개수만큼 쉬프트해준다 (위에서부터 표시)
     }
     dev = open(LED_DEVICE, O_RDWR);
     if (dev<0){
@@ -252,21 +286,20 @@ int fpga_text_lcd(const char* str1, const char*str2)
         str_size = strlen(str1);
         if(str_size>0)
         {
-            strncat(string, str1, str_size);
+            strncat(reinterpret_cast<char *>(string), str1, str_size);
             memset(string + str_size, ' ',LINE_BUFF-str_size);
         }
         str_size = strlen(str2);
         if(str_size>0)
         {
-            strncat(string, str2, str_size);
+            strncat(reinterpret_cast<char *>(string), str2, str_size);
             memset(string+LINE_BUFF+str_size, ' ',LINE_BUFF-str_size);
         }
-        write(dev, string, MAX_BUFF);
+        write(dev, string, MAX_BUFF - 1);
 
         close(dev);
+        return 0;
     }
-
-    return 0;
 }
 
 extern "C" JNIEXPORT jint JNICALL
@@ -281,12 +314,11 @@ Java_com_example_final_1shooting_DrawFrame_ReceiveTextLcdValue(
     __android_log_print(ANDROID_LOG_INFO, "FpgaFndExample", "value = %s", pstr2);
 
     fpga_text_lcd(pstr1, pstr2);
-    __android_log_print(ANDROID_LOG_INFO, "Debug 1", "Driver = %d", result);
 
     (*env).ReleaseStringUTFChars(val1, pstr1);
     (*env).ReleaseStringUTFChars(val2, pstr2);
 
-    return 0;
+    return result;
 }
 // ------------------------------------ 부저
 int fpga_buzzer(int x)

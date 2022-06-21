@@ -14,7 +14,9 @@ import com.example.final_shooting.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity {
 
     // Used to load the 'final_shooting' library on application startup.
-    int score = 30;
+    int score = 0;
+    int mode = 1; // 1 = 이지모드, 2 = 하드모드
+
     static {
         System.loadLibrary("final_shooting");
     }
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     public void GameStart(View view) {
         Intent intent = new Intent(this, GameStart.class);
         intent.putExtra("score", score);
+        intent.putExtra("mode", mode);
         startActivity(intent);
         finish();
     }

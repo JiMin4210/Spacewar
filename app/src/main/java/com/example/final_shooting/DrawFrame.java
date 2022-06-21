@@ -20,11 +20,13 @@ public class DrawFrame extends View {
     static int screenWidth, screenHeight; // 메모리 주소를 고정시킨다.
     static long FPS; // 초당 프레임 몇번인지 계산
     static int buttonbar = 30;//120; // 밑에 버튼바 크기만큼 올려줌 (가상디바이스 = 120, 실제 디바이스 = 30)
+    static int mode;
     long FRAME;
     Bitmap background;
     Handler handler;
     Hero hero;
     Runnable runnable;
+    Runnable runmotor; // 모터 전용 러너블객체
     ArrayList<Monster> monsters; // Array쓰는이유 - 메모리 최적화
     ArrayList<Boss> bosses;
     ArrayList<Gun> guns;
@@ -33,11 +35,14 @@ public class DrawFrame extends View {
     int score;
     Paint scorePaint;
     int overFlag = 1; // 이걸 해줘야 종료화면이 두번 안뜸 + 스레드 더이상 안 만듬 = 에러가 안남
+    int gunflag = 0;
+    int gametime = 0;
+    int killm = 0; // 몬스터 죽인 회수
 
-
-    public DrawFrame(Context context) {
+    public DrawFrame(Context context, int mode) {
         super(context);
         this.context = context;
+        this.mode = mode;
         handler = new Handler();
         FRAME = 60;
         FPS = 1000/FRAME; 
@@ -56,10 +61,18 @@ public class DrawFrame extends View {
         scorePaint.setColor(Color.RED);
         scorePaint.setTextSize(80);
         scorePaint.setTextAlign(Paint.Align.LEFT);
+        hero.ReceiveDotValue(hero.face); // 처음 시작할 땐 웃는표정
+        //ReceiveTextLcdValue("hidwadwa", "abcdwadwa");
         runnable = new Runnable() {
             @Override
             public void run() {
                 invalidate();
+            }
+        };
+        runmotor = new Runnable() {
+            @Override
+            public void run() {
+                SetMotorState(0,0,10); // 좌우방향 랜덤하게
             }
         };
     }
@@ -70,7 +83,7 @@ public class DrawFrame extends View {
         //-----------------------생명이 끝나면---------------------------
         canvas.drawText(String.valueOf(score),100,200,scorePaint);
         canvas.drawText(String.valueOf(hero.life),100,500,scorePaint);
-        if(hero.life == 0) {
+        if(hero.life <= 0 && overFlag == 1) { // overFlag 안해주면 gameover 엑티비티가 2번실행되는 문제점이있기에 방지해줌
             overFlag = 0;
             Intent intent = new Intent(context, GameOver.class);
             intent.putExtra("score", score);
@@ -86,7 +99,7 @@ public class DrawFrame extends View {
         //-----------------------아이템 관련 코딩-------------------------
         if((int)(Math.random()*150) == 1) { // 확률 구현
             if (items.size() < 4) {
-                items.add(new Healer(context,(int)(Math.random()*(screenWidth-100)),
+                items.add(new Item(context,(int)(Math.random()*(screenWidth-100)),
                         (int)(Math.random()*(screenHeight-buttonbar))));
             }
         }
@@ -95,7 +108,7 @@ public class DrawFrame extends View {
             Item item = items.get(i);
             canvas.drawBitmap(item.bitmap, item.x, item.y, null);
             item.moveShape(this); // 충돌검사 수행
-            if(item.life == 0)
+            if(item.life <= 0)
                 items.remove(item);
         }
         //-------------------------------------------------------------
@@ -115,7 +128,7 @@ public class DrawFrame extends View {
                     canvas.drawBitmap(monster.ragebitmap, monster.x+monster.bitsize[0]-monster.ragebitmap.getWidth(), monster.y, null);
             }
             monster.moveShape(this);
-            if(monster.life == 0)
+            if(monster.life <= 0)
                 monsters.remove(monster);
 
         }
@@ -125,6 +138,13 @@ public class DrawFrame extends View {
             if (bosses.size() < 2) {
                 bosses.add(new Boss(context, (int) (Math.random() * (screenWidth - 100)),
                         (int) (Math.random() * (screenHeight - buttonbar))));
+                if(hero.face != 3) { // 놀란 표정으로 전환
+                    hero.face = 3;
+                    hero.facetime = 0;
+                    hero.ReceiveDotValue(hero.face);
+                }
+                SetMotorState(1,(int)(Math.random()*2),10); // 좌우방향 랜덤하게
+                handler.postDelayed(runmotor,720);
             }
         }
         for(int i = 0; i<bosses.size(); i++)
@@ -139,7 +159,7 @@ public class DrawFrame extends View {
                     canvas.drawBitmap(boss.ragebitmap, boss.x+boss.bitsize[0]-boss.ragebitmap.getWidth(), boss.y, null);
             }
             boss.moveShape(this);
-            if(boss.life == 0)
+            if(boss.life <= 0)
                 bosses.remove(boss);
 
         }
@@ -165,8 +185,31 @@ public class DrawFrame extends View {
                 effects.remove(effect);
         }
         //-------------------------------------------------------------
-        if(overFlag == 1)
-            handler.postDelayed(runnable,FRAME);
+        if(gunflag == 1) // 총소리 관련 코드
+            ReceiveBuzzerValue(gunflag++);
+        else if (gunflag >= 2)
+        {
+            gunflag = 0;
+            ReceiveBuzzerValue(gunflag);
+        }
+        //-------------------------------------------------------------
+
+        if(gametime%(FPS*1) == 0)
+        {
+            String f1 = " T : "+String.valueOf(gametime/FPS)+"  K:" + String.valueOf(killm);
+            String f2 = " S : "+String.valueOf(hero.speedX)+"  P:" + String.valueOf(hero.power);
+            ReceiveTextLcdValue(f1, f2);
+        }
+
+        if(overFlag == 1) {
+            handler.postDelayed(runnable, FRAME);
+            gametime++;
+        }
+        else {
+            hero.face = 2;
+            hero.ReceiveDotValue(hero.face);
+        }
+
     }
 
     @Override
@@ -179,6 +222,7 @@ public class DrawFrame extends View {
         if(event.getAction() == MotionEvent.ACTION_DOWN){
             if(guns.size() < 5)
             {
+                gunflag = 1;
                 Gun gun = new Gun(context,hero.x + hero.bitsize[0]/2,hero.y + hero.bitsize[1]/2);
                 gun.atan(touchX,touchY); // 총알 좌표 계산
                 guns.add(gun);
@@ -194,6 +238,11 @@ public class DrawFrame extends View {
 
         return true;
     }
+    void setfndscore()
+    {
+        ReceiveFndValue(String.valueOf(score));
+    }
+    public native int ReceiveFndValue(String a);
     public native int ReceiveBuzzerValue(int x);
     public native int ReceiveTextLcdValue(String ptr1, String ptr2);
     public native int DeviceOpen(); // 이건 핸들러로 하기에 엑티비티 다시보기

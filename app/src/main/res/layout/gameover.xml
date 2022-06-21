@@ -23,7 +23,6 @@
         android:id="@+id/imageView5"
         android:layout_width="93dp"
         android:layout_height="94dp"
-        android:layout_marginEnd="4dp"
         android:background="@drawable/close"
         android:onClick="exit"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -33,23 +32,34 @@
 
     <ImageView
         android:id="@+id/imageView6"
-        android:layout_width="274dp"
-        android:layout_height="129dp"
-        android:layout_marginTop="124dp"
-        android:layout_marginEnd="68dp"
+        android:layout_width="315dp"
+        android:layout_height="125dp"
+        android:layout_marginTop="96dp"
+        android:layout_marginEnd="350dp"
         android:background="@drawable/gameover"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="208dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="256dp"
+        android:layout_marginEnd="456dp"
+        android:background="@drawable/score"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
     <TextView
         android:id="@+id/tvPoints"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="31dp"
-        android:text="Score: "
+        android:layout_width="119dp"
+        android:layout_height="61dp"
+        android:layout_marginStart="216dp"
+        android:layout_marginTop="24dp"
+        android:text="0000"
         android:textColor="#FFFFFF"
-        android:textSize="40sp"
-        app:layout_constraintEnd_toEndOf="@+id/imageView6"
+        android:textSize="50sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/imageView6"
         app:layout_constraintTop_toBottomOf="@+id/imageView6" />
 

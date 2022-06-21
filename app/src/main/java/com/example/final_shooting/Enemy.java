@@ -89,6 +89,11 @@ public class Enemy extends Character{
             ch.life --;
             ReciveLedValue(ch.life);
             life = 0; // 주인공과 부딪히는 적군들은 모두 없어진다 - 점수는 안오르게 함
+            if(df.hero.face != 4) {
+                df.hero.face = 4;
+                df.hero.facetime = 0;
+                ReceiveDotValue(df.hero.face);
+            }
             df.effects.add(new Effect(context,ch.x-15,ch.y-ch.bitsize[1]-10,"explosion",9));
         }
     }
