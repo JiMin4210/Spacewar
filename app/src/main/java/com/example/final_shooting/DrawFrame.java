@@ -2,6 +2,7 @@ package com.example.final_shooting;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -29,8 +30,9 @@ public class DrawFrame extends View {
     ArrayList<Gun> guns;
     ArrayList<Item> items;
     ArrayList<Effect> effects;
+    int score;
     Paint scorePaint;
-    Bitmap bitmap;
+    int overFlag = 1; // 이걸 해줘야 종료화면이 두번 안뜸 + 스레드 더이상 안 만듬 = 에러가 안남
 
 
     public DrawFrame(Context context) {
@@ -54,7 +56,6 @@ public class DrawFrame extends View {
         scorePaint.setColor(Color.RED);
         scorePaint.setTextSize(80);
         scorePaint.setTextAlign(Paint.Align.LEFT);
-        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ragemode); // 그냥 실험용
         runnable = new Runnable() {
             @Override
             public void run() {
@@ -66,62 +67,21 @@ public class DrawFrame extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.drawBitmap(background, 0, 0, null);
+        //-----------------------생명이 끝나면---------------------------
+        canvas.drawText(String.valueOf(score),100,200,scorePaint);
+        canvas.drawText(String.valueOf(hero.life),100,500,scorePaint);
+        if(hero.life == 0) {
+            overFlag = 0;
+            Intent intent = new Intent(context, GameOver.class);
+            intent.putExtra("score", score);
+            context.startActivity(intent);
+            ((Activity) context).finish();
+        }
         //-----------------------주인공 관련 코딩-------------------------
         //int test = getJoystick();
         //canvas.drawText(String.valueOf(test),50,50,scorePaint);
         canvas.drawBitmap(hero.bitmap, hero.x, hero.y, null);
         hero.moveShape(this);
-        //-------------------------------------------------------------
-
-        //-----------------------몬스터 관련 코딩-------------------------
-        if(monsters.size() < 7){
-            monsters.add(new Monster(context,(int)(Math.random()*(screenWidth-100)),
-                    (int)(Math.random()*(screenHeight-buttonbar))));
-        }
-        for(int i = 0; i<monsters.size(); i++)
-        {
-            Monster monster = monsters.get(i);
-            if(monster.ragemode == 1)
-            {
-                canvas.drawBitmap(bitmap, monster.x, monster.y, null);
-            }
-            canvas.drawBitmap(monster.bitmap, monster.x, monster.y, null);
-            monster.moveShape(this);
-            if(monster.life == 0)
-                monsters.remove(monster);
-
-        }
-        //-------------------------------------------------------------
-        //-----------------------보스 관련 코딩-------------------------
-        if((int)(Math.random()*FPS*10) == 1) { // 확률 구현 (약 10초에 한번이 평균)
-            if (bosses.size() < 2) {
-                bosses.add(new Boss(context, (int) (Math.random() * (screenWidth - 100)),
-                        (int) (Math.random() * (screenHeight - buttonbar))));
-            }
-        }
-        for(int i = 0; i<bosses.size(); i++)
-        {
-            Boss boss = bosses.get(i);
-            if(boss.ragemode == 1)
-            {
-                canvas.drawBitmap(bitmap, boss.x, boss.y, null);
-            }
-            canvas.drawBitmap(boss.bitmap, boss.x, boss.y, null);
-            boss.moveShape(this);
-            if(boss.life == 0)
-                bosses.remove(boss);
-
-        }
-        //-------------------------------------------------------------
-        //-----------------------총알 관련 코딩--------------------------
-        for(int i = 0; i<guns.size(); i++)
-        {
-            Gun gun = guns.get(i);
-            canvas.drawBitmap(gun.bitmap, gun.x, gun.y, null);
-            gun.moveShape(this);
-            if(gun.life == 0)
-                guns.remove(gun);
-        }
         //-------------------------------------------------------------
         //-----------------------아이템 관련 코딩-------------------------
         if((int)(Math.random()*150) == 1) { // 확률 구현
@@ -139,6 +99,62 @@ public class DrawFrame extends View {
                 items.remove(item);
         }
         //-------------------------------------------------------------
+        //-----------------------몬스터 관련 코딩-------------------------
+        if(monsters.size() < 7){
+            monsters.add(new Monster(context,(int)(Math.random()*(screenWidth-100)),
+                    (int)(Math.random()*(screenHeight-buttonbar))));
+        }
+        for(int i = 0; i<monsters.size(); i++)
+        {
+            Monster monster = monsters.get(i);
+            canvas.drawBitmap(monster.bitmap, monster.x, monster.y, null);
+            if(monster.ragemode == 1){
+                if(monster.direction == 1) // 방향에 따라 ragebitmap도 다르게 해준다.
+                    canvas.drawBitmap(monster.ragebitmap, monster.x, monster.y, null);
+                else
+                    canvas.drawBitmap(monster.ragebitmap, monster.x+monster.bitsize[0]-monster.ragebitmap.getWidth(), monster.y, null);
+            }
+            monster.moveShape(this);
+            if(monster.life == 0)
+                monsters.remove(monster);
+
+        }
+        //-------------------------------------------------------------
+        //-----------------------보스 관련 코딩-------------------------
+        if((int)(Math.random()*FPS*10) == 1) { // 확률 구현 (약 10초에 한번이 평균)
+            if (bosses.size() < 2) {
+                bosses.add(new Boss(context, (int) (Math.random() * (screenWidth - 100)),
+                        (int) (Math.random() * (screenHeight - buttonbar))));
+            }
+        }
+        for(int i = 0; i<bosses.size(); i++)
+        {
+            Boss boss = bosses.get(i);
+            canvas.drawBitmap(boss.bitmap, boss.x, boss.y, null);
+            if(boss.ragemode == 1)
+            {
+                if(boss.direction == 1)
+                    canvas.drawBitmap(boss.ragebitmap, boss.x, boss.y, null);
+                else
+                    canvas.drawBitmap(boss.ragebitmap, boss.x+boss.bitsize[0]-boss.ragebitmap.getWidth(), boss.y, null);
+            }
+            boss.moveShape(this);
+            if(boss.life == 0)
+                bosses.remove(boss);
+
+        }
+        //-------------------------------------------------------------
+        //-----------------------총알 관련 코딩--------------------------
+        for(int i = 0; i<guns.size(); i++)
+        {
+            Gun gun = guns.get(i);
+            canvas.drawBitmap(gun.bitmap, gun.x, gun.y, null);
+            gun.moveShape(this);
+            if(gun.life == 0)
+                guns.remove(gun);
+        }
+        //-------------------------------------------------------------
+
         //----------------------이펙트 관련 코딩-------------------------
         for(int i = 0; i<effects.size(); i++)
         {
@@ -149,7 +165,8 @@ public class DrawFrame extends View {
                 effects.remove(effect);
         }
         //-------------------------------------------------------------
-        handler.postDelayed(runnable,FRAME);
+        if(overFlag == 1)
+            handler.postDelayed(runnable,FRAME);
     }
 
     @Override

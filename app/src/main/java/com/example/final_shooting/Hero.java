@@ -17,6 +17,7 @@ public class Hero extends Character{
         bitsize[1] = bitmap.getHeight();
         this.x = x - bitsize[0]/2; // 원하는 좌표가 중앙이 되도록 조절해줌 (화면 사이즈 계산으로)
         this.y = y - bitsize[1]/2; // 원하는 좌표가 중앙이 되도록 조절해줌 (화면 사이즈 계산으로)
+        this.life = 2;
     }
 
     @Override

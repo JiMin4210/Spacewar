@@ -1,6 +1,7 @@
 package com.example.final_shooting;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 public class Enemy extends Character{
@@ -13,18 +14,19 @@ public class Enemy extends Character{
     int bufX, bufY;
     int nownumber;
     int ragemode;
+    int interval = 40; // 주인공과 몹이 얼마만큼 닿아야 하는지를 나타내는 변수 (충돌 정밀도 향상 용도)
+    Bitmap ragebitmap;
     String nickname;
 
     public Enemy(Context context, int x, int y) {
         super(context,x,y);
         this.lifeTime = 0;
-        this.speedX = (int)(Math.random()*3)+1; // 1~5구간 랜덤
-        this.speedY = (int)(Math.random()*3)+1; // 1~5구간 랜덤
         this.traceX = (int)(Math.random()*(DrawFrame.screenWidth-100)); // 처음에 추적할 위치
         this.traceY = (int)(Math.random()*(DrawFrame.screenHeight-DrawFrame.buttonbar));
         this.nownumber = 1; // 현재 무슨 행동인지 식별하기위함
         this.ragemode = 0;
         this.direction = (int)(Math.random()*2)+1; // 적의 방향은 왼쪽, 오른쪽 두개밖에 없음
+        this.ragebitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ragemode);
     }
 
     @Override
@@ -32,7 +34,7 @@ public class Enemy extends Character{
         lifeTime ++;
         collisionCheck(df.hero, df);
         if(lifeTime <= df.FPS*angryTime) {
-            traceXY(traceX, traceY, 0, 0, 0);
+            traceXY(traceX, traceY, xymargin, xymargin, 0);
             if(x>traceX-bitsize[0] && x<traceX+xymargin &&y>traceY-bitsize[1] && y<traceY+xymargin)
             {
                 this.traceX = (int)(Math.random()*(DrawFrame.screenWidth-100)); // 새로운 위치 추적
@@ -82,34 +84,34 @@ public class Enemy extends Character{
 
     @Override
     public void collisionCheck(Character ch, DrawFrame df) {
-        if(x>ch.x-bitsize[0] && x<ch.x+ch.bitsize[0] &&y>ch.y-bitsize[1] && y<ch.y+ch.bitsize[1])
+        if(x>ch.x-bitsize[0] + interval && x<ch.x+ch.bitsize[0] - interval &&y>ch.y-bitsize[1] + interval && y<ch.y+ch.bitsize[1] - interval)
         {
             ch.life --;
-            life = 0; // 주인공과 부딪히는 적군들은 모두 없어진다 - 점수는 안오름
+            life = 0; // 주인공과 부딪히는 적군들은 모두 없어진다 - 점수는 안오르게 함
             df.effects.add(new Effect(context,ch.x-15,ch.y-ch.bitsize[1]-10,"explosion",9));
         }
     }
 
     public void traceXY(int tx, int ty,int marginX,int marginY, int flag) // 대상을 추적하는 함수
     {
-        if(x > tx + marginX)
+        if(x > tx + marginX - interval)
             speedX = -Math.abs(speedX);
 
-        else if(x + bitsize[0] < tx)
+        else if(x + bitsize[0] < tx + interval)
             speedX = Math.abs(speedX);
 
-        if(y > ty + marginY)
+        if(y > ty + marginY - interval)
             speedY = -Math.abs(speedY);
 
-        else if(y + bitsize[1] < ty)
+        else if(y + bitsize[1] < ty + interval)
             speedY = Math.abs(speedY);
 
         bufX = speedX;
         bufY = speedY;
 
-        if(x < tx + marginX && x + bitsize[0] > tx) // 지그제그 움직임 오류 해결 (조금이라도 걸치면 직진)
+        if(x < tx + marginX - interval && x + bitsize[0] > tx + interval) // 지그제그 움직임 오류 해결 (조금이라도 걸치면 직진)
             speedX = 0;
-        else if(y < ty + marginY && y + bitsize[1] > ty)
+        else if(y < ty + marginY - interval && y + bitsize[1] > ty + interval)
             speedY = 0;
 
         if(flag == 1 && lifeTime % (DrawFrame.FPS * angrySpeed) == 0) // 추적 시작후 n초마다 속도가 1씩 빨라진다.

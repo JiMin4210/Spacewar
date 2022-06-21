@@ -56,6 +56,9 @@ public class Gun extends Character{
         {
             ch.life --;
             life = 0;
+            Enemy enemy = (Enemy) ch; // 총알 충돌은 enemy하고만 일어나기에 이렇게 형변환 해준다. (enemyScore에 접근하기 위함)
+            if(enemy.life <=0)
+                df.score += enemy.enemyScore;
             df.effects.add(new Effect(context,ch.x+ch.bitsize[0]/2,ch.y,"blood",3));
         }
     }

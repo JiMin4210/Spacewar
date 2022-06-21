@@ -3,7 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/ES/final_shooting/app/src/main/res/layout/GameOver.xml" value="0.3362708719851577" />
         <entry key="..\:/ES/final_shooting/app/src/main/res/layout/activity_main.xml" value="0.9" />
+        <entry key="..\:/ES/final_shooting/app/src/main/res/layout/gameover.xml" value="0.1" />
       </map>
     </option>
   </component>
