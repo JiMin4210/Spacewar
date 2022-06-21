@@ -24,4 +24,5 @@ public abstract class Character {
     public abstract void outCheck(int movingX, int movingY);
     public abstract void collisionCheck(Character ch, DrawFrame df); // 충돌 검사 - 모든 객체가 해야하기에 공통
                                                                      // 이펙트를 위해 df까지 써줌
+    public native String ReciveLedValue(int x);
 }

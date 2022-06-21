@@ -14,7 +14,7 @@ public class Enemy extends Character{
     int bufX, bufY;
     int nownumber;
     int ragemode;
-    int interval = 40; // 주인공과 몹이 얼마만큼 닿아야 하는지를 나타내는 변수 (충돌 정밀도 향상 용도)
+    int interval = 10; // 주인공과 몹이 얼마만큼 닿아야 하는지를 나타내는 변수 (충돌 정밀도 향상 용도) -> 가상디바이스에선 사이즈들이 다 커져서 40해도 되는데 보드에선 실제사이즈이기에 낮게해야함
     Bitmap ragebitmap;
     String nickname;
 
@@ -87,6 +87,7 @@ public class Enemy extends Character{
         if(x>ch.x-bitsize[0] + interval && x<ch.x+ch.bitsize[0] - interval &&y>ch.y-bitsize[1] + interval && y<ch.y+ch.bitsize[1] - interval)
         {
             ch.life --;
+            ReciveLedValue(ch.life);
             life = 0; // 주인공과 부딪히는 적군들은 모두 없어진다 - 점수는 안오르게 함
             df.effects.add(new Effect(context,ch.x-15,ch.y-ch.bitsize[1]-10,"explosion",9));
         }

@@ -78,8 +78,8 @@ public class DrawFrame extends View {
             ((Activity) context).finish();
         }
         //-----------------------주인공 관련 코딩-------------------------
-        //int test = getJoystick();
-        //canvas.drawText(String.valueOf(test),50,50,scorePaint);
+        //int test = hero.getJoystick();
+        //canvas.drawText(String.valueOf(test),300,300,scorePaint);
         canvas.drawBitmap(hero.bitmap, hero.x, hero.y, null);
         hero.moveShape(this);
         //-------------------------------------------------------------
@@ -194,5 +194,10 @@ public class DrawFrame extends View {
 
         return true;
     }
-
+    public native int ReceiveBuzzerValue(int x);
+    public native int ReceiveTextLcdValue(String ptr1, String ptr2);
+    public native int DeviceOpen(); // 이건 핸들러로 하기에 엑티비티 다시보기
+    public native int DeviceClose();
+    public native int ReceivePushSwitchValue();
+    public native String SetMotorState(int act, int dir, int spd);
 }
