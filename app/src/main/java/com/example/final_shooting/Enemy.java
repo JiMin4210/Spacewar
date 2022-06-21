@@ -86,6 +86,7 @@ public class Enemy extends Character{
         {
             ch.life --;
             life = 0; // 주인공과 부딪히는 적군들은 모두 없어진다 - 점수는 안오름
+            df.effects.add(new Effect(context,ch.x-15,ch.y-ch.bitsize[1]-10,"explosion",9));
         }
     }
 
