@@ -15,9 +15,10 @@ public class GameStart extends AppCompatActivity {
         //-------------- 스타트 화면에서 불러온 변수 -------------------
         int mode = getIntent().getExtras().getInt("mode");
         int score = getIntent().getExtras().getInt("score");
+        int shotname = getIntent().getExtras().getInt("shotname");
         //Toast.makeText(this, String.valueOf(mode), Toast.LENGTH_SHORT).show();
         //---------------------------------------------------------
-        DrawFrame game = new DrawFrame(this, mode);
+        DrawFrame game = new DrawFrame(this, mode, shotname);
         game.score = score;
         game.setfndscore(); // 이전 스코어를 넣어줬기에 바로 출력시켜준다.
         setContentView(game);

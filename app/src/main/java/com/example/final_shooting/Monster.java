@@ -31,7 +31,7 @@ public class Monster extends Enemy{
         checkbitmap();
         bitsize[0] = bitmap.getWidth();
         bitsize[1] = bitmap.getHeight();
-        this.enemyScore = 100; // 일반 몬스터 죽일시 5점
+        this.enemyScore = 5; // 일반 몬스터 죽일시 5점
     }
 
 }

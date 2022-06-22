@@ -6,6 +6,7 @@
 #include "fpga_dot_font.h"
 
 #define JOY_DEVICE "/dev/fpga_joystick"
+#define MUSIC_DEVICE "/dev/fpga_music"
 #define BUZZER_DEVICE "/dev/fpga_buzzer"
 #define FPGA_TEXT_LCD_DEVICE "/dev/fpga_text_lcd"
 #define PUSH_SWITCH_DEVICE "/dev/fpga_push_switch"
@@ -90,6 +91,18 @@ int fpga_fnd(const char* str)
 
 extern "C" JNIEXPORT jint JNICALL
 Java_com_example_final_1shooting_DrawFrame_ReceiveFndValue(
+        JNIEnv* env,
+        jobject thiz, jstring val) {
+    jint result;
+    const char * str = env->GetStringUTFChars(val,NULL);
+    __android_log_print(ANDROID_LOG_INFO,"FpgaFndExample", "value = %s",str);
+    result=fpga_fnd(str);
+    env->ReleaseStringUTFChars(val, str);
+    return result;
+}
+
+extern "C" JNIEXPORT jint JNICALL
+Java_com_example_final_1shooting_MainActivity_ReceiveFndValue(
         JNIEnv* env,
         jobject thiz, jstring val) {
     jint result;
@@ -204,7 +217,7 @@ int fpga_push_close(void)
     }
 }
 
-int fpga_push_switch(void)
+int fpga_push_switch()
 {
     int i;
     int dev;
@@ -217,7 +230,6 @@ int fpga_push_switch(void)
         __android_log_print(ANDROID_LOG_INFO, "Device Open Error Opened", "Driver = %d", gFd);
         return -1;
     } else {
-        close(gFd);
         __android_log_print(ANDROID_LOG_INFO, "Device Open Success", "Driver = %d", gFd);
 
         buff_size = sizeof(push_sw_buff);
@@ -257,6 +269,7 @@ Java_com_example_final_1shooting_DrawFrame_DeviceOpen(
 {
     int retval;
     retval = fpga_push_open();
+    return retval;
 }
 
 extern "C" JNIEXPORT jint JNICALL
@@ -266,7 +279,70 @@ Java_com_example_final_1shooting_DrawFrame_DeviceClose(
 {
     int retval;
     retval = fpga_push_close();
+    return retval;
 }
+
+extern "C" JNIEXPORT jint JNICALL
+Java_com_example_final_1shooting_MainActivity_ReceivePushSwitchValue(
+        JNIEnv* env,
+        jobject thiz)
+{
+    int retval;
+    retval = fpga_push_switch();
+    return retval;
+}
+
+extern "C" JNIEXPORT jint JNICALL
+Java_com_example_final_1shooting_MainActivity_DeviceOpen(
+        JNIEnv* env,
+        jobject thiz)
+{
+    int retval;
+    retval = fpga_push_open();
+    return retval;
+}
+
+extern "C" JNIEXPORT jint JNICALL
+Java_com_example_final_1shooting_MainActivity_DeviceClose(
+        JNIEnv* env,
+        jobject thiz)
+{
+    int retval;
+    retval = fpga_push_close();
+    return retval;
+}
+
+
+extern "C" JNIEXPORT jint JNICALL
+Java_com_example_final_1shooting_GameOver_ReceivePushSwitchValue(
+        JNIEnv* env,
+        jobject thiz)
+{
+    int retval;
+    retval = fpga_push_switch();
+    return retval;
+}
+
+extern "C" JNIEXPORT jint JNICALL
+Java_com_example_final_1shooting_GameOver_DeviceOpen(
+        JNIEnv* env,
+        jobject thiz)
+{
+    int retval;
+    retval = fpga_push_open();
+    return retval;
+}
+
+extern "C" JNIEXPORT jint JNICALL
+Java_com_example_final_1shooting_GameOver_DeviceClose(
+        JNIEnv* env,
+        jobject thiz)
+{
+    int retval;
+    retval = fpga_push_close();
+    return retval;
+}
+
 
 // ------------------------------------ LCD
 int fpga_text_lcd(const char* str1, const char*str2)

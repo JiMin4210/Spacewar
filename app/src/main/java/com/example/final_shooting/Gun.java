@@ -9,15 +9,17 @@ public class Gun extends Character{
 
     public Gun(Context context, int x, int y) {
         super(context,x,y);
-        this.bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.shot);
+        String bitname = "shot" + String.valueOf(DrawFrame.shotname); // 몬스터 이미지는 랜덤으로 생성 + 몬스터마다 점수, 체력 다르게 가능
+        int resID = context.getResources().getIdentifier(bitname, "drawable", context.getPackageName());
+        this.bitmap = BitmapFactory.decodeResource(context.getResources(), resID);
         bitsize[0] = bitmap.getWidth();
         bitsize[1] = bitmap.getHeight();
         this.x = x - bitsize[0]/2; // 원하는 좌표가 중앙이 되도록 조절해줌 (사이즈 계산으로)
         this.y = y - bitsize[1]/2; // 원하는 좌표가 중앙이 되도록 조절해줌 (사이즈 계산으로)
         if(DrawFrame.mode == 1) // 이지모드일 때 총알속도
-            subSpeed = 30;
+            subSpeed = 25;
         else // 하드모드일 때 총알속도
-            subSpeed = 20;
+            subSpeed = 30;
     }
 
     void atan(int clickX, int clickY) // 각도를 찾는 함수
@@ -64,11 +66,12 @@ public class Gun extends Character{
             if(enemy.life <=0) {
                 df.score += enemy.enemyScore;
                 df.killm++;
+                String dir = enemy.direction == 1 ? "r" : "l";
+                df.effects.add(new Effect(context,ch.x,ch.y,"goast"+dir,5));
             }
             df.ReceiveFndValue(String.valueOf(df.score));
             df.effects.add(new Effect(context,ch.x+ch.bitsize[0]/2,ch.y,"blood",3));
         }
     }
-
 
 }

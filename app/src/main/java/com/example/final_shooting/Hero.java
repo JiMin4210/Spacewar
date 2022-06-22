@@ -9,6 +9,7 @@ public class Hero extends Character{
 
     int face; // 현재 표정
     int facetime; // 현재 표정 유지 시간.
+    int boom = 1; // 가지고 있는 폭탄의 개수
 
     public Hero(Context context, int x, int y) {
         super(context,x,y);
@@ -54,7 +55,7 @@ public class Hero extends Character{
         {
             x = 0;
         }
-        if(movingY > DrawFrame.screenHeight - DrawFrame.buttonbar - bitsize[1])
+        if(movingY > DrawFrame.screenHeight - bitsize[1])
         {
             y = DrawFrame.screenHeight  - bitsize[1];
         }

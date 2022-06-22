@@ -6,7 +6,6 @@ public class Boss extends Enemy{
 
     public Boss(Context context, int x, int y) {
         super(context,x,y);
-
         this.nickname = "boss";
         this.speedX = 2;
         this.speedY = 2;
