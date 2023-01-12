@@ -1,0 +1,276 @@
+자바 슈팅게임 만들기
+  -> Bitmap = 안드로이드에서 이미지 관리와 표현을 위해서는 비트맵을 익혀야함.
+  -> BitmapFactory는 여러가지 이미지 포맷을 decode 해서 bitmap 으로 변환하는 함수들로 되어있다
+  -> BitmapFactory.decodeResource() //주로 이 함수 쓴다. res에 있는파일 비트맵 전환
+
+2. 페인트 객체 (그래픽 객체이다)
+  -> paint(Graphics g)
+  -> 메소드를 오버라이드해서 원하는 그림이나 도형만든다.
+
+3. ArrayList 클래스
+  -> 배열과의 차이점은 배열은 크기가 고정인 반면 ArrayList는 크기가 가변적으로 변한다.
+  -> ArrayList<Integer> integers2 = new ArrayList<>(); // 타입 생략 가능 (원래는 new ArrayList<Integer>();)
+  -> integers2.add(1); // 엘레멘트 추가
+  -> integers2.set(0,2); // 기존 0번 인덱스를 2로 바꿈
+  -> 전체삭제 = integers2.clear();
+  -> 부분삭제 = integers2.remove(2); //내용중에 2인것을 삭제 -> 이후 반환
+  -> 값 확인 방법은 integers2.size()를 for문돌려서 integers2.get(i)를 보면 됨
+
+4. Thread vs. Runnable
+  -> 쓰레드는 상속(extend)해야한다. 자바는 다중상속이 안 좋기 때문에
+  -> 인터페이스인 Runnable을 쓰는것이 더 좋다. 
+
+final Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+           invalidate();
+        }
+    };
+
+  -> 이러면 implements Runnable안해도 되는듯 Runnable바로 객체 생성해주면서 오버라이드 변경 = 익명객체선언이다.
+  -> 즉 1회성일때 익명 구현객체 선언하는거고 영구적으로할라면 implements해주고 오버라이드 해줘야한다.
+  -> 원래라면 MyRunnable클래스를 만들어서 Runnable implements 하고 재정의했어야했다. 무조건 하지만 익명 객체 선언으로 가능한것
+  -> 스레드도 마찬가지 MyThread()만들고 Thread상속 후 run을 재정의하고 Thread thread1 = new MyThread();이렇게 해줘야한다.
+  -> 계속 햇갈렸던것 = SpaceShooter에 runnable을 implements를 안해주는 이유는 SpaceShooter에서 run을 재정의해준다고해도
+      Thread thread = new Thread(SpaceShooter)가 돼야하는데 자기 자신 객체를 만들어주는건 좀 어색하기 때문이다.(그래도 되긴할듯하다)
+
+  -> invalidate가 호출 될 때마다 ondraw가 호출 돼 화면은 초기화 된다
+
+  -> public class MyRunnable implements Runnable {}
+  -> public class MyThread extends Thread {}
+  -> 러너블 클래스가 다른 클래스를 상속받아서 run을 더 다양하게 만들수있는 가능성이있다.
+  -> 스레드 클래스는 이미 스레드를 상속받아서 run을 다양하게 만들기가 힘들다.
+
+  -> Runnable runnable = new MyRunnable();
+      Thread thread = new Thread(runnable);
+      (이렇게 run 재정의하고 스레드생성자에 넣어줘야한다. - 그래야 스레드 생성)
+  -> Thread thread1 = new MyThread();
+      (보통은 그냥 이렇게 생성)
+  -> 이후 thread.start()
+  -> 스레드와 러너블은 동일한 기능을 한다.
+
+  -> handler.postDelayed(runnable, UPDATE_MILLIS);
+      (이것도 러너블을 인자로넣어 스레드로 동작시킨다 - 딜레이타임 후 실행)
+
+
+5. setContentView()메소드는 레이아웃 xml의 내용을 파싱하여 뷰를 생성하고, 뷰에 정의된 속성을 설정한다. (기본적으로 3개의 인자)
+  1) void setContentView(int layoutResID) 
+  ->  layout resource 를 인자로 받습니다. 이후 LayoutInflater 를 통해 inflate 되어지고 이후 최상단 뷰에 add 될 것 입니다.
+
+  2) void setContentView(View view)
+  -> view 를 인자로 받습니다. 특정 view 로 content 를 구성 하고 싶을 경우 사용 될 것입니다.
+     한가지 주의사항으로는 인자로 사용 될 view 의 width, height 를 별도로 지정하여 사용하고자 하여도, 
+     함수 내부적으로 기본 LayoutParam 상의 width, height 를 MATH_PARENT 로 설정 하기 때문에 
+     항상 MATH_PARENT 로 content view 가 설정 된다는 점입니다. 특정 크기로 지정하고 싶다면 별도의 LayoutParam 을 구성하여 
+     3. 메소드를 사용해야 합니다. (크기 지정하고싶을 때)
+
+  3) void setContentView(View view, ViewGroup.LayoutParams params)
+
+6. View 클래스 onDraw()
+  -> View 클래스에서 상속받아 onDraw()콜백 메소드 정의
+  -> 화면 다시그릴 필요가있을 때 자동 호출
+  -> 이 안에 그림을 그리는 Canvals 클래스와 Paint클래스 사용
+  -> Canvals (그림을 그리는 캔버스에 해당 Bitmap 객체를 가짐 - 도화지의 개념)
+  -> Paint (색상, 선 스타일, 채우기 스타일, 폰트 등의 그리기 속성을 가짐 - 물감의 개념)
+
+7. view클래스를 만들고 setContentView(new class)를 집어넣으면 해당 클래스의 onDraw가 호출된다
+ -> onTouchEvent을 오버라이드해 화면 전체 터치값 리턴이 가능해진다.
+
+8. context가 무엇인가?
+  -> 이름 그대로 해석한다면 애플리케이션(객체)의 현재 상태의 맥락(context)를 의미합니다. 
+     컨텍스트는 새로 생성된 객체가 지금 어떤 일이 일어나고 있는지 알 수 있도록 합니다. 
+     따라서 액티비티와 애플리케이션에 대한 정보를 얻기 위해서는 컨텍스트를 사용하면 됩니다.
+
+  -> 또한, 컨텍스트(Context)는 시스템의 핸들과도 같습니다. 리소스. 데이터베이스, preferences 등에 대한 접근을 제공합니다. 
+     안드로이드 앱에는 ‘액티비티’라는 것이 있습니다. 액티비티는 애플리케이션이 현재 실행중인 환경에 대한 핸들과도 같습니다. 
+     액티비티 객체는 컨텍스트 객체를 상속받습니다. 
+     액티비티는 애플리케이션의 특정 리소스와 클래스, 그리고 애플리케이션 환경에 대한 정보에 대해 접근할 수 있게 해줍니다. ★★
+     (리소스 접근용도로 많이 쓰는듯)
+  -> 즉 컨텍스트가 있어야 특정 리소스, 클래스에 접근가능하기에 새로만든 클래스에 context를 주는것이다.
+  -> startActivity() API 호출하기위해서도 컨텍스트가 필요하다.
+
+9. Application Context
+Application 라이프사이클에 귀속됨
+Singleton Instance -> 앱이 죽기 전까지 동일한 객체 반환
+getApplicationContext()로 접근
+어떤 Context보다도 오래 유지됨
+
+10. Activity Context
+Activity 라이프사이클에 귀속됨
+getContext()로 접근
+Activity 범위 내에서 Context를 전달
+
+-> Activity Context는 자신의 엑티비티에 있어서의 정보만 교환하고 Activity 소멸시 쓸모없어진다 (따라서 긴 
+-> 쓸모없어져도 가비지컬렉터가 Activity Context는 가져가지 않기에 메모리 누수가 발생하는것이다.
+-> But Gui 작업에는 Activity Context가 필요 (Toast등등)
+
+11. invalidate()와 requestLayout()을 사용하는데 이 둘의 차이점이 궁금해서 찾아보았다.
+     View의 생명주기를 알아야 하는데
+     invalidate()는 draw를 다시 하도록 요청하고 requestLayout()은 measure를 통한 사이즈 체크부터 다시 시작한다.
+     단순한 변경 사항을 보여주기 위하여 다시 그리는 경우에는
+     invalidate()를 사용하고 사이즈가 바뀌어 뷰간의 경계에도 영향을 준다면 requestLayout()을 호출해야 한다.
+    -> 즉 ondraw만 할꺼면 invalidate(), 설정이 바뀐다면 requestLayout()
+    -> invalidate()는 onDraw를 스레드로 호출하고 바로 끝나는듯(이게 맞다 실험함)
+
+12. https://recipes4dev.tistory.com/143
+  -> 안드로이드에 대한 기초설명 (메니페스트 파일 등등)
+  -> 메인스레드의 핸들러는 루퍼로 메세지큐를 계속 보고있는데 만약 다른 스레드인 이벤트 클릭 리스너에서
+      click이 발생하면 핸들러로 메시지를 주고 핸들러가 그에 맞는 함수를 실행시키는 것이다.
+      handleMessage() 이걸 수신측에서 오버라이드해서 어떤 msg가 오면 어떤행동을 할지 정의해줌
+      handler.sendMessage(message)
+  -> runnable 객체 자체를 핸들러에게 보내기 (즉 메세지가 아닌 동작할 코드를 보내기)
+      handler.post(runnable)로 핸들러로 runnable안에있는 run코드를 전달함
+      코드를 바로 전달하는것이기에 handleMessage()를 오버라이드 할 필요가없게된다.
+  -> 다른스레드에서 메인 핸들러로 보낼수도있고 메인 핸들러에서 메인 핸들러로 메세지를 보낼 수 있다. (참조하는 핸들러객체가 같으므로)
+
+  -> but 우리는 같은 메인스레드에서 runnable객체를 handler.post(runnable)하는것이기에 같은 스레드에서 run을 하는것이다
+  -> 하지만 postdelay의 경우 handler.postdelay(runnable,300) 바로 스레드를 하나 만든다음 0.3초가 지나면 핸들러로 run코드 보내는듯
+      (이게 더 신빙성 있음)
+  -> 만약 이게 아니라면 그냥 0.3초 대기 타이머 걸어두고 runnable 코드 post로 보내기 한듯하다.
+
+13. Activity의 context가 매우 중요하다
+  -> startActivity라이브러리 ,finish등등 모두 context에 들어가있고 엑티비티에 관한 정보 모두가 context에 들어가있다.
+  -> finish의 경우 context로 불러오려면 ((Activity)mContext).finish(); 이런식이여야한다
+  -> context는 extends AppCompatActivity것이며 다중상속이 안되기에 View를 상속받은 SpaceShooter은 context를 간접적으로 받아야함
+  -> Activity 즉 정해진 화면이여야만이 extends AppCompatActivity가 가능하고 this로 현재 Activity의 context를 가져올 수 있다.
+      (이상한 OurSpaceship은 엑티비티가 아닌 진짜 아이콘을 그리기 위한것이기에 context를 간접적으로 받아와야한다.)
+  -> Activity는 oncreate부터 destroy까지의 과정이있는것을 말한다
+
+14. 처음 실행시 이 구문을 보고 어떤 엑티비티를 먼저 실행시킬지 정하는것이다.
+   <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+15. finish하면 현재 activity java 밑에서 실행되는 스레드까지 전부 종료
+  -> finish 시점에서 ondraw가 종료되는듯 (이건좀 테스트 필요)
+  -> 테스트 결과 : finsh()호출되고 끝까지 실행된 후에 끝난다.
+
+  -> final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                while(true) {
+                    try {
+                        Thread.sleep(60);
+                    } catch (InterruptedException e) {
+                    }
+                    game.invalidate();
+                }
+            }
+        };
+
+        //if(!paused)
+        Thread a = new Thread(runnable);
+        a.start();
+  -> 이렇게 메인문에서 해줘도 잘 작동한다. (while이 알아서 잘 끊긴다)
+  -> 또한 굳이 스레드로 안만들어도 된다 (우리는 스레드 빈 시간에 뭘 안하기때문에?) -> 스레드로 안만들면 동작이 안됨(그냥 while로하면)
+      but 이젠 조이스틱을 넣을것이기때문에 스레드시간동안 센서값을 읽으면 되겠다.
+  -> 아마 oncreate()에서 무한루프 도는게 좀 안되는건가 (원래는 스레드에서 무한루프했으니)
+      무한루프 돌아도 되는데 Thread.sleep(2000)때문에 에러난다. 아예 동작을 멈추는것이니 다른스레드에서 sleep을 해줘야 잘 된다.
+  -> 내가 예상하기론 invalidate()가 실행되면 다른 스레드에서 onDraw가 실행되는데 이 순간 Thread.sleep으로 스레드를 전부 멈췄으니
+      밑에있는 스레드까지 멈추게 돼서 안되는것같다.
+      (역시 이게 맞다 - Thread.sleep은 하위 스레드까지 다 멈춰버리는것같다)
+  -> 해결방법으론 main activity보단 view클래스의 ondraw마지막에는 Thread.sleep을 해줘도 잘 된다
+  -> Thread.sleep시에도 마우스 클릭 이벤트는 잘 된다 (마우스클릭 리스너는 다른 스레드에서 돌아가는중인듯?
+      메세지 큐에 들어가기에 소실없는듯
+
+  -> 원래는 onDraw에서 이렇게 해줬다. (runnable은 MILLIS시간동안 스레드에서 대기탈라고 해놓은것이다.)
+  -> if(!paused)
+            handler.postDelayed(runnable, UPDATE_MILLIS);
+
+
+
+-----------------------------------------------------------------------------------------------------------------------
+만들기 시작
+
+1. <item name="windowNoTitle">true</item>
+   <item name="android:windowFullscreen">true</item>
+  -> themes.xml에 추가시 타이틀바, 상태바가 없어진다.
+
+2. displaySize에서 y축은 밑에 가려지는 부분이 엄청 많다. (가상디바이스 기준 밑에부분 해상도가 1920이였다)
+
+3. https://www.pngegg.com/ko/png-etskh
+  -> png 악당 찾는 사이트
+
+4.  static int screenWidth, screenHeight
+  -> 이 이유는 클래스 생성시에도 이 변수를 고정시키기 위함 (하나의 메모리 주소를 보고있는 것이다
+
+5. class Counter  {
+    static int count = 0;
+    Counter() {
+        count++;
+        System.out.println(count);
+    }
+
+    public static int getCount() {
+        return count;
+    }
+}
+  ->이게 클래스 안에있다 하더라도 Counter.getCount()처럼 생성자 없이도 사용할 수 있다
+  -> 안에는 무조건 static 변수가 들어가기에 메모리가 고정되어있어서 그렇다
+  -> 변수또한 Counter.count로 접근이 가능하다 (생성자 없이도)
+
+6. 아크 탄젠트로 각도 계산
+  -> -30~30까지는 직선
+  -> 30~60까지는 대각선
+  -> 60~90까지는 직선 (스피드를 고정시키면서)
+
+7. 죽여서 뜨는 아이템 + 강화시스템
+
+8. 조이스틱 캐릭터도 아웃체크 필수임
+
+9. 몬스터마다 스피드 다르게
+
+10. gpio 3번핀 연결 안됨
+
+11. 5번쨰 gpio = LED연결 돼 있음
+
+12. static {
+        System.loadLibrary("final_shooting");
+    }
+  -> 이거의 경우 어떤 엑티비티에서 선언하던 다 잘 된다.
+
+13. 탄창 늘려주는 아이템
+
+14. 전역변수에 닉네임 등록
+  -> 파일 찾기 쉽게 (이름 같은거보다 낫다)
+ 
+15. 표창
+  -> 아이템으로 먹게하기?
+
+16. 이동속도 빠르게
+
+17. 발바꾸는 시간 제어 가능
+
+18. 팅기는건 보통 시간이없어서그럼
+
+19. 유도탄 만들기 (랜덤으로 몬스터 지정 후 발사)
+
+20. 몹 죽는 모션? (좀비 죽는거 하나 이펙트로 해놔도 될듯) 한 3개정도만
+  -> if life == 0쪽에 넣어두면 완벽할거같다.
+
+21. if(getIntent().getExtras() != null) // 첫 화면 인텐트 여부 체크하기
+
+22. LED JNI 수정한거 올리기
+
+23. 목숨 최대 개수 8개로 하기 (led의 개수가 8개밖에 없음)
+  -> led는 거꾸로부터 표시되게 수정
+
+24. 값이 변하는부분에서만 함수를 넣어 최적화
+
+25. for(i = 0; i<str_size; i++)
+    {
+        if((str[i]<0x30)||(str[i])>0x39){
+            return 1;
+        }
+        data[3-i] = str[str_size - 1 - i] - 0x30;
+    }
+
+  -> fnd 뒤에서부터 나오게 출력
+
+26. overFlag 안해주면 gameover 엑티비티가 2번실행되는 문제점이있기에 방지해줌
+
+27. 하드모드 -> 몬스터 체력 2배, 몬스터 이동속도 2배, 최대 총알 1/2배 (대신 총알속도는 좀 빠름)
+
+28. joy = 268, music=269번 메이져번호 등록해줌
