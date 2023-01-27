@@ -9,6 +9,13 @@
 ### 동작 영상
 - [SpaceWar 동작영상](https://www.youtube.com/watch?v=vcuzwI079nE)
 
+## :books: 얻은 역량
+- Device Driver 제작 눙력
+- Cross Compile에 대한 이해
+- Android App에 대한 이해와 제작 능력 (Activity, intent, XML)
+- NDK, JNI의 필요성에 대한 이해
+- 역할 분담을 통한 협력의 중요성에 대한 이해
+
 ## :pushpin: 기대효과
 - **Shooting Game App**과 **Device Driver**의 연결을 통해 사용자들이 **좀 더 실감나는 게임**을 즐길 수 있게 해준다.
 
