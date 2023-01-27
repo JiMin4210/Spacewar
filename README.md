@@ -1,18 +1,18 @@
 # SpaceWar App + Device Driver
-## 👋 프로젝트 소개
+## 프로젝트 소개
 > **Device Driver를 이용한 안드로이드 슈팅 게임**
 - **프로젝트 기간** : 2022.01 ~ 2022.07
 - [APP 제작 과정 시행 착오.txt](https://github.com/JiMin4210/App_dev_driver/blob/main/App%EA%B4%80%EB%A0%A8%20%EC%8B%9C%ED%96%89%EC%B0%A9%EC%98%A4.txt)
 - [Device Driver 제작 과정 시행 착오.txt](https://github.com/JiMin4210/App_dev_driver/blob/main/Dev_Driver%EC%8B%9C%ED%96%89%EC%B0%A9%EC%98%A4.txt)
 
-## :movie_camera: 동작 영상
+## 동작 영상
 ### 동작 영상
 - [SpaceWar 동작영상](https://www.youtube.com/watch?v=vcuzwI079nE)
 
-## :pushpin: 기대효과
+## 기대효과
 - **Shooting Game App**과 **Device Driver**의 연결을 통해 사용자들이 **좀 더 실감나는 게임**을 즐길 수 있게 해준다.
 
-## 🔧 C - Device Driver 기획
+## C - Device Driver 기획
 - **JOYSTICK** - 게임 내 캐릭터 8방향 제어 
 - **SWITCH** - 공격 버튼, 난이도 제어 버튼, 상점 이용 버튼
 - **FND** - 점수 출력
@@ -21,7 +21,7 @@
 - **BUZZER** - 총소리 출력
 - **MOTOR** - 대형 몬스터(BOSS) 출현시 회전
 
-## 🎮 JAVA - Game 기획
+## JAVA - Game 기획
 ### Game 요소
 - **8방향 캐릭터** 구현
 - 프레임별 이미지 교체로 몬스터의 **역동적인 움직임 구현**
@@ -35,12 +35,12 @@
 <img src="https://user-images.githubusercontent.com/90883534/215096347-cd91cca1-8e09-4340-b156-42549c9eec2b.png" width="700" height="400"/>
 
 ## 사용 보드
-- ACHRO-i.MX6Q
+- **ACHRO-i.MX6Q**
 
-## ⚡ 사용 기술
+## 사용 기술
 - **JNI** : JAVA에서 C/C++ 라이브러리 호출을 위함
 
-## 📝 사용 언어
+## 사용 언어
 - **JAVA** : Android App 제작
 - **C** : Device Driver 제작
 
