@@ -59,7 +59,7 @@
 - **Android Studio** : App 제작
 - **Linux** : Device Driver Module 등록, Device Driver Compile
 
-## 기타
+## 🎵 기타
 ### Game에 이용된 그림
 <img src="https://user-images.githubusercontent.com/90883534/215177827-a2ba6813-60ce-41c3-b336-7ad8df82dbac.png" width="700" height="400"/>
 
