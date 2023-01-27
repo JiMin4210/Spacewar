@@ -1,7 +1,7 @@
 # SpaceWar App + Device Driver
 ## 👋 프로젝트 소개
 > **Device Driver를 이용한 안드로이드 슈팅 게임**
-- **프로젝트 기간** : 2022.01 ~ 2022.07
+- **프로젝트 기간** : 2022.04 ~ 2022.06
 - [APP 제작 과정 시행 착오.txt](https://github.com/JiMin4210/App_dev_driver/blob/main/App%EA%B4%80%EB%A0%A8%20%EC%8B%9C%ED%96%89%EC%B0%A9%EC%98%A4.txt)
 - [Device Driver 제작 과정 시행 착오.txt](https://github.com/JiMin4210/App_dev_driver/blob/main/Dev_Driver%EC%8B%9C%ED%96%89%EC%B0%A9%EC%98%A4.txt)
 
