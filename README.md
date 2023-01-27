@@ -1,4 +1,5 @@
 # SpaceWar App + Device Driver
+## 👋 프로젝트 소개
 > Device Driver를 이용한 안드로이드 슈팅 게임 
 - 프로젝트 기간 : 2022.01 ~ 2022.07
 - [APP 제작 과정 시행 착오.txt](https://github.com/JiMin4210/App_dev_driver/blob/main/App%EA%B4%80%EB%A0%A8%20%EC%8B%9C%ED%96%89%EC%B0%A9%EC%98%A4.txt)
@@ -10,10 +11,10 @@
 ## :pushpin: 기능
 - Shooting Game App과 Device Driver의 연결을 통해 사용자들이 **좀 더 실감나는 게임**을 즐길 수 있게 해준다.
 
-## Device Driver 기획
+## 🔧 Device Driver 기획
 - **JOYSTICK** - 게임 내 캐릭터 8방향 제어 
 
-## 시스템 구조
+## 🎮 Game 기획
 
 
 ## ⚡ 사용 기술
