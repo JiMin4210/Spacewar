@@ -14,7 +14,7 @@
 ## Device Driver 기획
 <p>
 <div class=pull-right>
-![image](https://user-images.githubusercontent.com/90883534/215089048-6f2ec247-20f0-4947-ae87-3c71fdb011b2.png)
+https://user-images.githubusercontent.com/90883534/215089048-6f2ec247-20f0-4947-ae87-3c71fdb011b2.png
 <center>사진정보 Photo info</center>
 </div>
 JOYSTICK - 게임 내 캐릭터 8방향 제어
