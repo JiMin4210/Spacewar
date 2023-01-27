@@ -34,12 +34,22 @@
 ### Game 진행 순서
 <img src="https://user-images.githubusercontent.com/90883534/215096347-cd91cca1-8e09-4340-b156-42549c9eec2b.png" width="700" height="400"/>
 
+## 사용 보드
+- ACHRO-i.MX6Q
+
 ## ⚡ 사용 기술
-- **JNI** : JAVA에서 C/C++ 라이브러리 호출을 
+- **JNI** : JAVA에서 C/C++ 라이브러리 호출을 위함
 
 ## 📝 사용 언어
 - **JAVA** : Android App 제작
 - **C** : Device Driver 제작
+
+## 개발 환경
+- **Android Studio** : App 제작
+- **Linux** : Device Driver Module 등록, Device Driver Compile
+
+
+
 
 
 
