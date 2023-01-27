@@ -21,7 +21,7 @@
 - **MOTOR** - 대형 몬스터(BOSS) 출현시 회전
 
 ## 🎮 JAVA - Game 기획
-# Game 요소
+### Game 요소
 - 8방향 캐릭터 구현
 
 - 프레임별 이미지 교체로 몬스터의 역동적인 움직임 구현
@@ -35,7 +35,7 @@
 - 캐릭터의 공격력, 체력에 영향을 미치는 아이템 구현
 
 - 게임당 한 번 쓸 수 있는 스킬 구현 (switch 조작을 통해 전 맵 몬스터 제거)
-# Game 진행 순서
+### Game 진행 순서
 <img src="https://user-images.githubusercontent.com/90883534/215096347-cd91cca1-8e09-4340-b156-42549c9eec2b.png" width="700" height="400"/>
 
 ## ⚡ 사용 기술
