@@ -30,12 +30,12 @@
 - 몬스터마다 **특성을 고려**해 체력, 이동속도를 다르게 구현
 - 캐릭터의 공격력, 체력에 영향을 미치는 **아이템 구현**
 - 게임당 한 번 쓸 수 있는 **스킬 구현** (switch 조작을 통해 전 맵 몬스터 제거)
-- 
+
 ### Game 진행 순서
 <img src="https://user-images.githubusercontent.com/90883534/215096347-cd91cca1-8e09-4340-b156-42549c9eec2b.png" width="700" height="400"/>
 
 ## 🔨 사용 보드
-- ACHRO-i.MX6Q
+- **ACHRO-i.MX6Q**
 
 ## ⚡ 사용 기술
 - **JNI** : JAVA에서 C/C++ 라이브러리 호출을 위함
