@@ -7,7 +7,7 @@
 
 ## :movie_camera: 동작 영상
 ### 동작 영상
-- [SpaceWar 동작영상](https://www.youtube.com/watch?v=vcuzwI079nE)
+- [SpaceWar 동작영상 Youtube](https://www.youtube.com/watch?v=vcuzwI079nE)
 
 ## :books: 얻은 역량
 - Device Driver 제작 능력
