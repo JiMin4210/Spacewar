@@ -10,7 +10,7 @@
 - [SpaceWar 동작영상](https://www.youtube.com/watch?v=vcuzwI079nE)
 
 ## :pushpin: 기대효과
-- Shooting Game App과 Device Driver의 연결을 통해 사용자들이 **좀 더 실감나는 게임**을 즐길 수 있게 해준다.
+- **Shooting Game App**과 **Device Driver**의 연결을 통해 사용자들이 **좀 더 실감나는 게임**을 즐길 수 있게 해준다.
 
 ## 🔧 C - Device Driver 기획
 - **JOYSTICK** - 게임 내 캐릭터 8방향 제어 
@@ -35,7 +35,7 @@
 <img src="https://user-images.githubusercontent.com/90883534/215096347-cd91cca1-8e09-4340-b156-42549c9eec2b.png" width="700" height="400"/>
 
 ## ⚡ 사용 기술
-- **JNI** : JAVA에서 C를 실행시킬 수 있게 해준다.
+- **JNI** : JAVA에서 C/C++ 라이브러리 호출을 
 
 ## 📝 사용 언어
 - **JAVA** : Android App 제작
