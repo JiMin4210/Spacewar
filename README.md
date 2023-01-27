@@ -12,7 +12,7 @@
 - Shooting Game App과 Device Driver의 연결을 통해 사용자들이 좀 더 실감나게 게임을 즐길 수 있게 해준다.
 
 ## Device Driver 기획
-<div class=pull-right>https://user-images.githubusercontent.com/90883534/215089048-6f2ec247-20f0-4947-ae87-3c71fdb011b2.png<center>사진정보 Photo info</center></div>
+<img align="right" src="[joystick](https://user-images.githubusercontent.com/90883534/215089914-cb9dd858-92f7-475c-922b-275a86e33995.png)">
 JOYSTICK - 게임 내 캐릭터 8방향 제어
 
 ## 시스템 구조
