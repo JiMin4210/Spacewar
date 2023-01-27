@@ -10,10 +10,12 @@
 - [SpaceWar 동작영상](https://www.youtube.com/watch?v=vcuzwI079nE)
 
 ## :books: 얻은 역량
-- Device Driver 제작 눙력
+- Device Driver 제작 능력
 - Cross Compile에 대한 이해
+- Kernel 영역, User 영역에 대한 차이 이해
 - Android App에 대한 이해와 제작 능력 (Activity, intent, XML)
 - NDK, JNI의 필요성에 대한 이해
+- Linux 활용 
 - 역할 분담을 통한 협력의 중요성에 대한 이해
 
 ## :pushpin: 기대효과
