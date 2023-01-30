@@ -46,6 +46,10 @@
 ### Game 진행 순서
 <img src="https://user-images.githubusercontent.com/90883534/215096347-cd91cca1-8e09-4340-b156-42549c9eec2b.png" width="700" height="400"/>
 
+## 🔍 완성 이미지
+<img src="https://user-images.githubusercontent.com/90883534/215483856-5d0ce913-7a34-4459-acf4-f6472540bace.png" width="600" height="400"/>
+
+
 ## 🔨 사용 보드
 - **ACHRO-i.MX6Q**
 
